@@ -1,3 +1,5 @@
 trajectory_msgs/JointTrajectory trajectory
 ---
+float32[] robotHead
+float32[] robotRightArm
 bool success

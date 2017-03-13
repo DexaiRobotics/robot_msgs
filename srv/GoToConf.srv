@@ -1,7 +1,5 @@
-float32[] robotHead
-float32[] robotRightArm
+robot_msgs/RobotConfiguration conf
 --- 
 
-float32[] robotHead
-float32[] robotRightArm
+robot_msgs/RobotConfiguration conf
 bool success
