@@ -1,5 +1,5 @@
 
 ---
 
-sensor_msgs/JointState conf
+robot_msgs/RobotConfiguration conf
 bool success
