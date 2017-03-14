@@ -1,29 +1,6 @@
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
+# Robot messages #
 
 ### What is this repository for? ###
+* Robot related messages and services for control and management
 
-* Quick summary
-* Version
-* [Learn Markdown](mailto:jmwong@draper.com)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* Creator: [Jay M. Wong, jmwong@draper.com](mailto:jmwong@draper.com)
