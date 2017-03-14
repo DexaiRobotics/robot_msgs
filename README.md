@@ -1,4 +1,4 @@
-# Robot messages #
+# robot_msgs #
 
 ### What is this repository for? ###
 * Robot related messages and services for control and management
