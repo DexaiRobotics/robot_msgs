@@ -55,9 +55,10 @@ add_message_files(
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  GoToConf.srv
-	GetRobotConf.srv
+  GoToConf.srv 
+  GetRobotConf.srv
   SendJointTrajectory.srv
+  ChangeTool.srv
 )
 
 ## Generate actions in the 'action' folder

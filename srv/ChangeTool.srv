@@ -1,0 +1,6 @@
+string tool_name
+
+---
+robot_msgs/RobotConfiguration conf
+string new_urdf
+bool success
