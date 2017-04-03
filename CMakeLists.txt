@@ -59,6 +59,7 @@ add_service_files(
   GetRobotConf.srv
   SendJointTrajectory.srv
   ChangeTool.srv
+  ControlGripper.srv
 )
 
 ## Generate actions in the 'action' folder
