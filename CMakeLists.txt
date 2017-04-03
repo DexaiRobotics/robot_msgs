@@ -50,6 +50,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
    FILES
    RobotConfiguration.msg
+   RobotJointNames.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -57,6 +58,7 @@ add_service_files(
   FILES
   GoToConf.srv 
   GetRobotConf.srv
+  GetRobotJointNames.srv
   SendJointTrajectory.srv
   ChangeTool.srv
   ControlGripper.srv
