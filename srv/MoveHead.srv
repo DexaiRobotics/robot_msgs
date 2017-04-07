@@ -1,0 +1,5 @@
+float32[] goals
+--- 
+
+robot_msgs/RobotConfiguration conf
+bool success
