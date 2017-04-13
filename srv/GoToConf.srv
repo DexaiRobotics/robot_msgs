@@ -1,4 +1,5 @@
 robot_msgs/RobotConfiguration conf
+float32 duration
 --- 
 
 robot_msgs/RobotConfiguration conf
