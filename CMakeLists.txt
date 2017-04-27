@@ -64,6 +64,7 @@ add_service_files(
   ControlGripper.srv
   MoveHead.srv
   ExecuteVisuoGrasp.srv
+  LookAtObjPose.srv
 )
 
 ## Generate actions in the 'action' folder

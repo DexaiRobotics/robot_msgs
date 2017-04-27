@@ -1,0 +1,6 @@
+float32[] obj_pose
+string obj_name
+--- 
+
+robot_msgs/RobotConfiguration conf
+bool success
