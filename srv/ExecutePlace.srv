@@ -1,0 +1,7 @@
+float32[] pose
+float32 offset
+
+---
+
+robot_msgs/RobotConfiguration conf
+bool success

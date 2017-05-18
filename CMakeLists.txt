@@ -64,6 +64,7 @@ add_service_files(
   ControlGripper.srv
   MoveHead.srv
   ExecuteVisuoGrasp.srv
+  ExecutePlace.srv
   LookAtObjPose.srv
   CalibrationLog.srv
 )
