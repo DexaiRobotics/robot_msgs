@@ -65,6 +65,7 @@ add_service_files(
   MoveHead.srv
   ExecuteVisuoGrasp.srv
   LookAtObjPose.srv
+  CalibrationLog.srv
 )
 
 ## Generate actions in the 'action' folder
