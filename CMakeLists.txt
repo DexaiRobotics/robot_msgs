@@ -69,6 +69,8 @@ add_service_files(
   CalibrationLog.srv
 	SetHeadSpeed.srv
 	SetURDF.srv
+	Scoop.srv
+	Dump.srv
 )
 
 ## Generate actions in the 'action' folder
