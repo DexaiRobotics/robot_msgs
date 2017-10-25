@@ -68,6 +68,7 @@ add_service_files(
   LookAtObjPose.srv
   CalibrationLog.srv
 	SetHeadSpeed.srv
+	SetURDF.srv
 )
 
 ## Generate actions in the 'action' folder
