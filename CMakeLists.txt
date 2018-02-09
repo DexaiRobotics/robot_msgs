@@ -71,6 +71,7 @@ add_service_files(
 	SetURDF.srv
 	Scoop.srv
 	Dump.srv
+  SetValve.srv
 )
 
 ## Generate actions in the 'action' folder
