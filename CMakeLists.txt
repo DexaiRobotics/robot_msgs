@@ -74,6 +74,7 @@ add_service_files(
   SetValve.srv
   StartCalibrationDataCollection.srv
   StopCalibrationDataCollection.srv  
+  Calibrate.srv
 )
 
 ## Generate actions in the 'action' folder
