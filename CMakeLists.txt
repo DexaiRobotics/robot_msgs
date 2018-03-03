@@ -72,6 +72,8 @@ add_service_files(
 	Scoop.srv
 	Dump.srv
   SetValve.srv
+  StartCalibrationDataCollection.srv
+  StopCalibrationDataCollection.srv  
 )
 
 ## Generate actions in the 'action' folder
