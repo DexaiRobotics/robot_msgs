@@ -1,0 +1,8 @@
+string day
+string time
+string container
+string suffix
+
+--- 
+
+bool success
