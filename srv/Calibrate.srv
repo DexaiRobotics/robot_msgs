@@ -1,5 +1,6 @@
 string data_folder
 string urdf_path
+bool cal_intrinsics
 
 --- 
 
