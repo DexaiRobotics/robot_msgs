@@ -1,4 +1,5 @@
 string image_topic
+string log_subfolder
 
 --- 
 
