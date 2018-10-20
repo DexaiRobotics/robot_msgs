@@ -1,4 +1,4 @@
-string log_subfolder
+string log_folder_path
 string log_filename
 
 --- 
