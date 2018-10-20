@@ -76,6 +76,7 @@ add_service_files(
   StopCalibrationDataCollection.srv  
   Calibrate.srv
   SaveContainerState.srv
+  StartLCMDataCollection.srv
 )
 
 ## Generate actions in the 'action' folder

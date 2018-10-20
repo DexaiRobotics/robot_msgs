@@ -1,0 +1,6 @@
+string log_subfolder
+string log_filename
+
+--- 
+
+bool success
