@@ -51,6 +51,8 @@ add_message_files(
    FILES
    RobotConfiguration.msg
    RobotJointNames.msg
+   BoolStamped.msg
+   StringStamped.msg
 )
 
 ## Generate services in the 'srv' folder
