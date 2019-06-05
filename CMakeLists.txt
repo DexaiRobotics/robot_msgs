@@ -79,6 +79,7 @@ add_service_files(
   Calibrate.srv
   SaveContainerState.srv
   StartLCMDataCollection.srv
+  GetImage.srv
 )
 
 ## Generate actions in the 'action' folder
