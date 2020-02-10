@@ -1,0 +1,27 @@
+package robot_msgs;
+
+struct robot_status {
+  // The timestamp in microseconds.
+  // also serves as a unique identifier for
+  // status messages
+  int64_t utime;
+
+  int32_t num_joints;
+  double joint_position_measured[num_joints];
+  double joint_position_commanded[num_joints];
+  double joint_position_ipo[num_joints];
+  double joint_torque_measured[num_joints];
+  double joint_torque_commanded[num_joints];
+  double joint_torque_external[num_joints];
+
+  // pause status
+  boolean is_paused;
+  string pause_sources;
+
+  // plan utimes
+  int64_t last_received_plan;
+  int64_t last_completed_plan;
+
+  // range 0.0 (not started) to 1.0 (completed)
+  double plan_completion;
+}
