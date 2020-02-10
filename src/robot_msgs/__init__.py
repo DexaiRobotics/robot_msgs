@@ -6,3 +6,4 @@ DO NOT MODIFY BY HAND!!!!
 from .bool_t import bool_t
 from .trigger_t import trigger_t
 from .robot_status import robot_status
+from .pause_cmd import pause_cmd
