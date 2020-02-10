@@ -33,6 +33,8 @@ class robot_status
 
         std::vector< double > joint_position_ipo;
 
+        std::vector< double > joint_velocity_estimated;
+
         std::vector< double > joint_torque_measured;
 
         std::vector< double > joint_torque_commanded;
@@ -173,6 +175,11 @@ int robot_status::_encodeNoHash(void *buf, int offset, int maxlen) const
     }
 
     if(this->num_joints > 0) {
+        tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->joint_velocity_estimated[0], this->num_joints);
+        if(tlen < 0) return tlen; else pos += tlen;
+    }
+
+    if(this->num_joints > 0) {
         tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->joint_torque_measured[0], this->num_joints);
         if(tlen < 0) return tlen; else pos += tlen;
     }
@@ -241,6 +248,12 @@ int robot_status::_decodeNoHash(const void *buf, int offset, int maxlen)
     }
 
     if(this->num_joints) {
+        this->joint_velocity_estimated.resize(this->num_joints);
+        tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->joint_velocity_estimated[0], this->num_joints);
+        if(tlen < 0) return tlen; else pos += tlen;
+    }
+
+    if(this->num_joints) {
         this->joint_torque_measured.resize(this->num_joints);
         tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->joint_torque_measured[0], this->num_joints);
         if(tlen < 0) return tlen; else pos += tlen;
@@ -302,6 +315,7 @@ int robot_status::_getEncodedSizeNoHash() const
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += this->pause_sources.size() + 4 + 1;
     enc_size += __int64_t_encoded_array_size(NULL, 1);
@@ -313,7 +327,7 @@ int robot_status::_getEncodedSizeNoHash() const
 
 uint64_t robot_status::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0xe98b14a15164cb3dLL;
+    uint64_t hash = 0x1856d34c17605eeeLL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
