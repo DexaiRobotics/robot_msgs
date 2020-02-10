@@ -24,4 +24,7 @@ struct robot_status {
 
   // range 0.0 (not started) to 1.0 (completed)
   double plan_completion;
+
+  // message -- driver status string
+  string driver_status_msg;
 }

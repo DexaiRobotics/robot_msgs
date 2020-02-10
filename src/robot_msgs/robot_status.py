@@ -10,11 +10,11 @@ except ImportError:
 import struct
 
 class robot_status(object):
-    __slots__ = ["utime", "num_joints", "joint_position_measured", "joint_position_commanded", "joint_position_ipo", "joint_torque_measured", "joint_torque_commanded", "joint_torque_external", "is_paused", "pause_sources", "last_received_plan", "last_completed_plan", "plan_completion"]
+    __slots__ = ["utime", "num_joints", "joint_position_measured", "joint_position_commanded", "joint_position_ipo", "joint_torque_measured", "joint_torque_commanded", "joint_torque_external", "is_paused", "pause_sources", "last_received_plan", "last_completed_plan", "plan_completion", "driver_status_msg"]
 
-    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "boolean", "string", "int64_t", "int64_t", "double"]
+    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "boolean", "string", "int64_t", "int64_t", "double", "string"]
 
-    __dimensions__ = [None, None, ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], None, None, None, None, None]
+    __dimensions__ = [None, None, ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], None, None, None, None, None, None]
 
     def __init__(self):
         self.utime = 0
@@ -30,6 +30,7 @@ class robot_status(object):
         self.last_received_plan = 0
         self.last_completed_plan = 0
         self.plan_completion = 0.0
+        self.driver_status_msg = ""
 
     def encode(self):
         buf = BytesIO()
@@ -51,6 +52,10 @@ class robot_status(object):
         buf.write(__pause_sources_encoded)
         buf.write(b"\0")
         buf.write(struct.pack(">qqd", self.last_received_plan, self.last_completed_plan, self.plan_completion))
+        __driver_status_msg_encoded = self.driver_status_msg.encode('utf-8')
+        buf.write(struct.pack('>I', len(__driver_status_msg_encoded)+1))
+        buf.write(__driver_status_msg_encoded)
+        buf.write(b"\0")
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -75,13 +80,15 @@ class robot_status(object):
         __pause_sources_len = struct.unpack('>I', buf.read(4))[0]
         self.pause_sources = buf.read(__pause_sources_len)[:-1].decode('utf-8', 'replace')
         self.last_received_plan, self.last_completed_plan, self.plan_completion = struct.unpack(">qqd", buf.read(24))
+        __driver_status_msg_len = struct.unpack('>I', buf.read(4))[0]
+        self.driver_status_msg = buf.read(__driver_status_msg_len)[:-1].decode('utf-8', 'replace')
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if robot_status in parents: return 0
-        tmphash = (0xe005c330d3787216) & 0xffffffffffffffff
+        tmphash = (0xe98b14a15164cb3d) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

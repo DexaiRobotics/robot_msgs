@@ -52,6 +52,9 @@ class robot_status
         /// range 0.0 (not started) to 1.0 (completed)
         double     plan_completion;
 
+        /// message -- driver status string
+        std::string driver_status_msg;
+
     public:
         /**
          * Encode a message into binary form.
@@ -201,6 +204,11 @@ int robot_status::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->plan_completion, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    char* driver_status_msg_cstr = const_cast<char*>(this->driver_status_msg.c_str());
+    tlen = __string_encode_array(
+        buf, offset + pos, maxlen - pos, &driver_status_msg_cstr, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -271,6 +279,15 @@ int robot_status::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->plan_completion, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    int32_t __driver_status_msg_len__;
+    tlen = __int32_t_decode_array(
+        buf, offset + pos, maxlen - pos, &__driver_status_msg_len__, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+    if(__driver_status_msg_len__ > maxlen - pos) return -1;
+    this->driver_status_msg.assign(
+        static_cast<const char*>(buf) + offset + pos, __driver_status_msg_len__ - 1);
+    pos += __driver_status_msg_len__;
+
     return pos;
 }
 
@@ -290,12 +307,13 @@ int robot_status::_getEncodedSizeNoHash() const
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __double_encoded_array_size(NULL, 1);
+    enc_size += this->driver_status_msg.size() + 4 + 1;
     return enc_size;
 }
 
 uint64_t robot_status::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0xe005c330d3787216LL;
+    uint64_t hash = 0xe98b14a15164cb3dLL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
