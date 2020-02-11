@@ -16,7 +16,15 @@ struct robot_status {
   double joint_torque_external[num_joints];
 
   // ready to receive commands?
+  // output of CanReceiveCommands()
+  // in drake-franka-driver and ancillary_arm driver
   boolean is_ready;
+
+  // was the last received plan executed successfully?
+  // true on init. set to false if most recent plan
+  // could not be executed to completion.
+  // otherwise true.
+  boolean was_last_plan_successful;
 
   // pause status
   boolean is_paused;

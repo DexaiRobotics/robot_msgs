@@ -10,11 +10,11 @@ except ImportError:
 import struct
 
 class robot_status(object):
-    __slots__ = ["utime", "num_joints", "joint_position_measured", "joint_position_commanded", "joint_position_ipo", "joint_velocity_estimated", "joint_torque_measured", "joint_torque_commanded", "joint_torque_external", "is_ready", "is_paused", "pause_sources", "last_received_plan", "last_completed_plan", "plan_completion", "driver_status_msg"]
+    __slots__ = ["utime", "num_joints", "joint_position_measured", "joint_position_commanded", "joint_position_ipo", "joint_velocity_estimated", "joint_torque_measured", "joint_torque_commanded", "joint_torque_external", "is_ready", "was_last_plan_successful", "is_paused", "pause_sources", "last_received_plan", "last_completed_plan", "plan_completion", "driver_status_msg"]
 
-    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "double", "boolean", "boolean", "string", "int64_t", "int64_t", "double", "string"]
+    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "double", "boolean", "boolean", "boolean", "string", "int64_t", "int64_t", "double", "string"]
 
-    __dimensions__ = [None, None, ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], None, None, None, None, None, None, None]
+    __dimensions__ = [None, None, ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], None, None, None, None, None, None, None, None]
 
     def __init__(self):
         self.utime = 0
@@ -27,6 +27,7 @@ class robot_status(object):
         self.joint_torque_commanded = []
         self.joint_torque_external = []
         self.is_ready = False
+        self.was_last_plan_successful = False
         self.is_paused = False
         self.pause_sources = ""
         self.last_received_plan = 0
@@ -49,7 +50,7 @@ class robot_status(object):
         buf.write(struct.pack('>%dd' % self.num_joints, *self.joint_torque_measured[:self.num_joints]))
         buf.write(struct.pack('>%dd' % self.num_joints, *self.joint_torque_commanded[:self.num_joints]))
         buf.write(struct.pack('>%dd' % self.num_joints, *self.joint_torque_external[:self.num_joints]))
-        buf.write(struct.pack(">bb", self.is_ready, self.is_paused))
+        buf.write(struct.pack(">bbb", self.is_ready, self.was_last_plan_successful, self.is_paused))
         __pause_sources_encoded = self.pause_sources.encode('utf-8')
         buf.write(struct.pack('>I', len(__pause_sources_encoded)+1))
         buf.write(__pause_sources_encoded)
@@ -81,6 +82,7 @@ class robot_status(object):
         self.joint_torque_commanded = struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8))
         self.joint_torque_external = struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8))
         self.is_ready = bool(struct.unpack('b', buf.read(1))[0])
+        self.was_last_plan_successful = bool(struct.unpack('b', buf.read(1))[0])
         self.is_paused = bool(struct.unpack('b', buf.read(1))[0])
         __pause_sources_len = struct.unpack('>I', buf.read(4))[0]
         self.pause_sources = buf.read(__pause_sources_len)[:-1].decode('utf-8', 'replace')
@@ -93,7 +95,7 @@ class robot_status(object):
     _hash = None
     def _get_hash_recursive(parents):
         if robot_status in parents: return 0
-        tmphash = (0xee68a41604cae65c) & 0xffffffffffffffff
+        tmphash = (0x12681915951c29ff) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
