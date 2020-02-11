@@ -41,17 +41,30 @@ class robot_status
 
         std::vector< double > joint_torque_external;
 
+        /// ready to receive commands?
+        int8_t     is_ready;
+
         /// pause status
         int8_t     is_paused;
 
         std::string pause_sources;
 
-        /// plan utimes
+        /**
+         * update to plan utime instead of sending out
+         * plan received confirmation
+         */
         int64_t    last_received_plan;
 
+        /**
+         * update to plan utime instead of sending out plan
+         * completed confirmation
+         */
         int64_t    last_completed_plan;
 
-        /// range 0.0 (not started) to 1.0 (completed)
+        /**
+         * range 0.0 (not started) to 1.0 (completed)
+         * -1.0 (not completed successfully)
+         */
         double     plan_completion;
 
         /// message -- driver status string
@@ -194,6 +207,9 @@ int robot_status::_encodeNoHash(void *buf, int offset, int maxlen) const
         if(tlen < 0) return tlen; else pos += tlen;
     }
 
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->is_ready, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->is_paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -271,6 +287,9 @@ int robot_status::_decodeNoHash(const void *buf, int offset, int maxlen)
         if(tlen < 0) return tlen; else pos += tlen;
     }
 
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->is_ready, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->is_paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -317,6 +336,7 @@ int robot_status::_getEncodedSizeNoHash() const
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __boolean_encoded_array_size(NULL, 1);
+    enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += this->pause_sources.size() + 4 + 1;
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
@@ -327,7 +347,7 @@ int robot_status::_getEncodedSizeNoHash() const
 
 uint64_t robot_status::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0x1856d34c17605eeeLL;
+    uint64_t hash = 0xee68a41604cae65cLL;
     return (hash<<1) + ((hash>>63)&1);
 }
 

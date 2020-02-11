@@ -15,15 +15,23 @@ struct robot_status {
   double joint_torque_commanded[num_joints];
   double joint_torque_external[num_joints];
 
+  // ready to receive commands?
+  boolean is_ready;
+
   // pause status
   boolean is_paused;
   string pause_sources;
 
-  // plan utimes
+  // update to plan utime instead of sending out
+  // plan received confirmation
   int64_t last_received_plan;
+
+  // update to plan utime instead of sending out plan
+  // completed confirmation
   int64_t last_completed_plan;
 
   // range 0.0 (not started) to 1.0 (completed)
+  // -1.0 (not completed successfully)
   double plan_completion;
 
   // message -- driver status string
