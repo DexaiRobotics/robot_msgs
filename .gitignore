@@ -1,1 +1,9 @@
 *.pyc
+# Python distribution files
+src/dist
+src/build/
+*.egg-info
+
+#Misc OS and dev files
+.DS_Store
+.idea
