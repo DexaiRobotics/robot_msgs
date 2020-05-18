@@ -1,0 +1,9 @@
+package robot_msgs;
+
+struct joint_pos_cmd_t
+{
+    // microseconds since the epoch
+    int64_t  utime;
+    int32_t num_joints;
+    double joint_position_commanded[num_joints];
+}

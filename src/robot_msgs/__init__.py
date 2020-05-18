@@ -6,3 +6,4 @@ DO NOT MODIFY BY HAND!!!!
 from .bool_t import bool_t
 from .trigger_t import trigger_t
 from .pause_cmd import pause_cmd
+from .joint_pos_cmd_t import joint_pos_cmd_t
