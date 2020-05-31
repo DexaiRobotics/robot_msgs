@@ -3,6 +3,13 @@
 ### What is this repository for? ###
 * Robot related messages and services for control and management
 
+### To generate python LCM type definitions
+
+```bash
+cd src
+lcm-gen -p ../lcmtypes/*.lcm
+```
+
 ### To create install python only library
 ```bash
 cd src
