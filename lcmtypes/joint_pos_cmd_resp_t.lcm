@@ -1,0 +1,9 @@
+package robot_msgs;
+
+struct joint_pos_cmd_resp_t
+{
+    // microseconds since the epoch
+    int64_t  utime;
+    int32_t  command_index;
+    boolean  success;
+}

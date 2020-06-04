@@ -10,16 +10,18 @@ except ImportError:
 import struct
 
 class joint_pos_cmd_t(object):
-    __slots__ = ["utime", "num_joints", "joint_position_commanded"]
+    __slots__ = ["utime", "num_joints", "num_confs", "wait_for_ack", "cmd_joint_positions"]
 
-    __typenames__ = ["int64_t", "int32_t", "double"]
+    __typenames__ = ["int64_t", "int32_t", "int32_t", "boolean", "double"]
 
-    __dimensions__ = [None, None, ["num_joints"]]
+    __dimensions__ = [None, None, None, None, ["num_confs", "num_joints"]]
 
     def __init__(self):
         self.utime = 0
         self.num_joints = 0
-        self.joint_position_commanded = []
+        self.num_confs = 0
+        self.wait_for_ack = False
+        self.cmd_joint_positions = []
 
     def encode(self):
         buf = BytesIO()
@@ -28,8 +30,9 @@ class joint_pos_cmd_t(object):
         return buf.getvalue()
 
     def _encode_one(self, buf):
-        buf.write(struct.pack(">qi", self.utime, self.num_joints))
-        buf.write(struct.pack('>%dd' % self.num_joints, *self.joint_position_commanded[:self.num_joints]))
+        buf.write(struct.pack(">qiib", self.utime, self.num_joints, self.num_confs, self.wait_for_ack))
+        for i0 in range(self.num_confs):
+            buf.write(struct.pack('>%dd' % self.num_joints, *self.cmd_joint_positions[i0][:self.num_joints]))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -43,15 +46,18 @@ class joint_pos_cmd_t(object):
 
     def _decode_one(buf):
         self = joint_pos_cmd_t()
-        self.utime, self.num_joints = struct.unpack(">qi", buf.read(12))
-        self.joint_position_commanded = struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8))
+        self.utime, self.num_joints, self.num_confs = struct.unpack(">qii", buf.read(16))
+        self.wait_for_ack = bool(struct.unpack('b', buf.read(1))[0])
+        self.cmd_joint_positions = []
+        for i0 in range(self.num_confs):
+            self.cmd_joint_positions.append(struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8)))
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if joint_pos_cmd_t in parents: return 0
-        tmphash = (0x27594349b6eb8030) & 0xffffffffffffffff
+        tmphash = (0x10eeaf10c84dc97f) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
