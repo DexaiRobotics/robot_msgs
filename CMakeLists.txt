@@ -80,6 +80,7 @@ add_service_files(
   SaveContainerState.srv
   StartLCMDataCollection.srv
   GetImage.srv
+  LoadFile.srv
 )
 
 ## Generate actions in the 'action' folder
