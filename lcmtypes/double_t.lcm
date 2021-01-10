@@ -1,0 +1,9 @@
+package robot_msgs;
+
+// simple timestamped double precision floating point message
+struct double_t
+{
+    // microseconds since the epoch
+    int64_t  utime;
+    double   data;
+}

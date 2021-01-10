@@ -7,3 +7,4 @@ from .bool_t import bool_t
 from .trigger_t import trigger_t
 from .pause_cmd import pause_cmd
 from .string_t import string_t
+from .double_t import double_t
