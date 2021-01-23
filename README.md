@@ -10,6 +10,14 @@ cd src
 lcm-gen -p ../lcmtypes/*.lcm
 ```
 
+### To generate C++ LCM type definitions
+
+
+```bash
+cd include
+lcm-gen -x ../lcmtypes/*.lcm
+```
+
 ### To create install python only library
 ```bash
 cd src
