@@ -17,6 +17,7 @@ namespace robot_msgs
 class bool_t
 {
     public:
+        /// microseconds since the epoch
         int64_t    utime;
 
         int8_t     data;

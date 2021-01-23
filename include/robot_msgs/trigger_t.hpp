@@ -18,6 +18,7 @@ namespace robot_msgs
 class trigger_t
 {
     public:
+        /// microseconds since the epoch
         int64_t    utime;
 
         int8_t     success;
@@ -127,7 +128,8 @@ int trigger_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     if(tlen < 0) return tlen; else pos += tlen;
 
     char* message_cstr = const_cast<char*>(this->message.c_str());
-    tlen = __string_encode_array(buf, offset + pos, maxlen - pos, &message_cstr, 1);
+    tlen = __string_encode_array(
+        buf, offset + pos, maxlen - pos, &message_cstr, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -144,10 +146,12 @@ int trigger_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     if(tlen < 0) return tlen; else pos += tlen;
 
     int32_t __message_len__;
-    tlen = __int32_t_decode_array(buf, offset + pos, maxlen - pos, &__message_len__, 1);
+    tlen = __int32_t_decode_array(
+        buf, offset + pos, maxlen - pos, &__message_len__, 1);
     if(tlen < 0) return tlen; else pos += tlen;
     if(__message_len__ > maxlen - pos) return -1;
-    this->message.assign(static_cast<const char*>(buf) + offset + pos, __message_len__ - 1);
+    this->message.assign(
+        static_cast<const char*>(buf) + offset + pos, __message_len__ - 1);
     pos += __message_len__;
 
     return pos;
