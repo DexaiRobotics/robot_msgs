@@ -53,7 +53,6 @@ class pause_cmd(object):
         return self
     _decode_one = staticmethod(_decode_one)
 
-    _hash = None
     def _get_hash_recursive(parents):
         if pause_cmd in parents: return 0
         tmphash = (0x1a28f43141e42fe) & 0xffffffffffffffff
@@ -67,4 +66,8 @@ class pause_cmd(object):
             pause_cmd._packed_fingerprint = struct.pack(">Q", pause_cmd._get_hash_recursive([]))
         return pause_cmd._packed_fingerprint
     _get_packed_fingerprint = staticmethod(_get_packed_fingerprint)
+
+    def get_hash(self):
+        """Get the LCM hash of the struct"""
+        return struct.unpack(">Q", pause_cmd._get_packed_fingerprint())[0]
 
