@@ -18,6 +18,7 @@ namespace robot_msgs
 class string_t
 {
     public:
+        /// microseconds since the epoch
         int64_t    utime;
 
         std::string data;
@@ -122,7 +123,8 @@ int string_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     if(tlen < 0) return tlen; else pos += tlen;
 
     char* data_cstr = const_cast<char*>(this->data.c_str());
-    tlen = __string_encode_array(buf, offset + pos, maxlen - pos, &data_cstr, 1);
+    tlen = __string_encode_array(
+        buf, offset + pos, maxlen - pos, &data_cstr, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -136,10 +138,12 @@ int string_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     if(tlen < 0) return tlen; else pos += tlen;
 
     int32_t __data_len__;
-    tlen = __int32_t_decode_array(buf, offset + pos, maxlen - pos, &__data_len__, 1);
+    tlen = __int32_t_decode_array(
+        buf, offset + pos, maxlen - pos, &__data_len__, 1);
     if(tlen < 0) return tlen; else pos += tlen;
     if(__data_len__ > maxlen - pos) return -1;
-    this->data.assign(static_cast<const char*>(buf) + offset + pos, __data_len__ - 1);
+    this->data.assign(
+        static_cast<const char*>(buf) + offset + pos, __data_len__ - 1);
     pos += __data_len__;
 
     return pos;

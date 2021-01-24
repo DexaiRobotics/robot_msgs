@@ -13,10 +13,11 @@
 namespace robot_msgs
 {
 
-/// simple timestamped double message
+/// simple timestamped double precision floating point message
 class double_t
 {
     public:
+        /// microseconds since the epoch
         int64_t    utime;
 
         double     data;
