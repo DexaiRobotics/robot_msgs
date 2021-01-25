@@ -14,8 +14,8 @@ lcm-gen -p ../lcmtypes/*.lcm
 
 
 ```bash
-cd include
-lcm-gen -x ../lcmtypes/*.lcm
+cd include/lcmtypes
+lcm-gen -x ../../lcmtypes/*.lcm
 ```
 
 ### To create install python only library
