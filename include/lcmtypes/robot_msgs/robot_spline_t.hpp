@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 #include "drake/lcmt_piecewise_polynomial.hpp"
-#include "lcmtypes/robot_joint.hpp"
+#include "robot_msgs/robot_joint.hpp"
 #include "bot_core/position_3d_t.hpp"
 
 namespace robot_msgs
@@ -31,7 +31,7 @@ class robot_spline_t
 
         int32_t    dof;
 
-        std::vector< lcmtypes::robot_joint > robot_joints;
+        std::vector< robot_msgs::robot_joint > robot_joints;
 
         bot_core::position_3d_t cartesian_goal;
 
@@ -234,7 +234,7 @@ uint64_t robot_spline_t::_computeHash(const __lcm_hash_ptr *p)
 
     uint64_t hash = 0xed0a1268ba000244LL +
          drake::lcmt_piecewise_polynomial::_computeHash(&cp) +
-         lcmtypes::robot_joint::_computeHash(&cp) +
+         robot_msgs::robot_joint::_computeHash(&cp) +
          bot_core::position_3d_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);
