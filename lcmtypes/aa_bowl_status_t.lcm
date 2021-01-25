@@ -1,0 +1,17 @@
+package robot_msgs;
+
+struct aa_bowl_status_t
+{
+    // microseconds since the epoch
+    int64_t  utime;
+    string   neighbors_i_can_hear;
+    boolean  is_ready_for_bowl;
+    boolean  is_bowl_available;
+    boolean  is_direction_downstream;
+    boolean  is_at_approach;
+    boolean  is_at_bowl_pass;
+    boolean  is_vacuum_on;
+    string   bowl_id;
+    int8_t   bowl_pass_location;
+    string   intended_recipient;
+}
