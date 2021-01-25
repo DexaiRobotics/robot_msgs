@@ -14,9 +14,11 @@ lcm-gen -p ../lcmtypes/*.lcm
 
 
 ```bash
+mkdir -p include/lcmtypes
 cd include/lcmtypes
 lcm-gen -x ../../lcmtypes/*.lcm
 ```
+This is for consistent include style. Note that only only is `include/` listed in the include dir, but also `include/lcmtypes`.
 
 ### To create install python only library
 ```bash
