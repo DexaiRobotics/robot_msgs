@@ -1,6 +1,5 @@
 package robot_msgs;
 
-
 struct pause_cmd
 {
     // microseconds since the epoch
