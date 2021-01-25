@@ -12,7 +12,6 @@ lcm-gen -p ../lcmtypes/*.lcm
 
 ### To generate C++ LCM type definitions
 
-
 ```bash
 mkdir -p include/lcmtypes
 cd include/lcmtypes
@@ -21,6 +20,7 @@ lcm-gen -x ../../lcmtypes/*.lcm
 This is for consistent include style. Note that not only is `include/` listed in the include dir, but also `include/lcmtypes`.
 
 ### To create install python only library
+
 ```bash
 cd src
 python3 setup.py sdist bdist_wheel
