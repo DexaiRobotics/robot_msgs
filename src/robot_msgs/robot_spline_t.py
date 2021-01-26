@@ -11,14 +11,14 @@ import struct
 
 import drake.lcmt_piecewise_polynomial
 
-import lcmtypes.robot_joint
+import robot_msgs.robot_joint
 
 import bot_core.position_3d_t
 
 class robot_spline_t(object):
     __slots__ = ["utime", "robot_name", "num_states", "piecewise_polynomial", "dof", "robot_joints", "cartesian_goal", "exec_opt"]
 
-    __typenames__ = ["int64_t", "string", "int32_t", "drake.lcmt_piecewise_polynomial", "int32_t", "lcmtypes.robot_joint", "bot_core.position_3d_t", "int16_t"]
+    __typenames__ = ["int64_t", "string", "int32_t", "drake.lcmt_piecewise_polynomial", "int32_t", "robot_msgs.robot_joint", "bot_core.position_3d_t", "int16_t"]
 
     __dimensions__ = [None, None, None, None, None, ["dof"], None, None]
 
@@ -49,7 +49,7 @@ class robot_spline_t(object):
         self.piecewise_polynomial._encode_one(buf)
         buf.write(struct.pack(">i", self.dof))
         for i0 in range(self.dof):
-            assert self.robot_joints[i0]._get_packed_fingerprint() == lcmtypes.robot_joint._get_packed_fingerprint()
+            assert self.robot_joints[i0]._get_packed_fingerprint() == robot_msgs.robot_joint._get_packed_fingerprint()
             self.robot_joints[i0]._encode_one(buf)
         assert self.cartesian_goal._get_packed_fingerprint() == bot_core.position_3d_t._get_packed_fingerprint()
         self.cartesian_goal._encode_one(buf)
@@ -75,7 +75,7 @@ class robot_spline_t(object):
         self.dof = struct.unpack(">i", buf.read(4))[0]
         self.robot_joints = []
         for i0 in range(self.dof):
-            self.robot_joints.append(lcmtypes.robot_joint._decode_one(buf))
+            self.robot_joints.append(robot_msgs.robot_joint._decode_one(buf))
         self.cartesian_goal = bot_core.position_3d_t._decode_one(buf)
         self.exec_opt = struct.unpack(">h", buf.read(2))[0]
         return self
@@ -84,7 +84,7 @@ class robot_spline_t(object):
     def _get_hash_recursive(parents):
         if robot_spline_t in parents: return 0
         newparents = parents + [robot_spline_t]
-        tmphash = (0xed0a1268ba000244+ drake.lcmt_piecewise_polynomial._get_hash_recursive(newparents)+ lcmtypes.robot_joint._get_hash_recursive(newparents)+ bot_core.position_3d_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
+        tmphash = (0xed0a1268ba000244+ drake.lcmt_piecewise_polynomial._get_hash_recursive(newparents)+ robot_msgs.robot_joint._get_hash_recursive(newparents)+ bot_core.position_3d_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
