@@ -12,5 +12,7 @@ setup_args = generate_distutils_setup(
 # define $LCMPATH for discovery of custom LCM types, use : for separation
 with open(os.path.expanduser('~/.bashrc'), 'r+') as file:
     if 'export LCMPATH=' not in file.read():
-        file.write('export LCMPATH=/src/catkin_src/robot_msgs/src/robot_msgs')
+        # append must end with a newline character \n per posix standard
+        # or next append will be without linebreak
+        file.write('export LCMPATH=/src/catkin_src/robot_msgs/src/robot_msgs\n')
 setup(**setup_args)
