@@ -31,12 +31,11 @@ class plan_exec_opts_t
         // static data member then re-run lcm-gen with '--cpp-std=c++11'
         // to generate code that is compliant with C++11
         static const int16_t  RETRACT_FROM_STOP = 2;
-        /* This execution option is for the ancillary arm, and results
-           in plan execution that grabs set point joint positions for J0
-           from the future to compensate for the inertia of moving the
-           entire AA 
-        */
-       static const int16_t   OFFSET_TRAJ = 3;
+        // If you're using C++11 and are getting compiler errors saying
+        // things like ‘constexpr’ needed for in-class initialization of
+        // static data member then re-run lcm-gen with '--cpp-std=c++11'
+        // to generate code that is compliant with C++11
+        static const int16_t  OFFSET_TRAJ = 3;
 
     public:
         /**
