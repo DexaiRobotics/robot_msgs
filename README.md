@@ -15,7 +15,7 @@ lcm-gen -p ../lcmtypes/*.lcm
 ```bash
 mkdir -p include/lcmtypes
 cd include/lcmtypes
-lcm-gen -x ../../lcmtypes/*.lcm
+lcm-gen -x ../../lcmtypes/*.lcm --cpp-std=c++11
 ```
 This is for consistent include style. Note that not only is `include/` listed in the include dir, but also `include/lcmtypes`.
 

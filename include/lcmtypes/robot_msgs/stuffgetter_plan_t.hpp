@@ -101,31 +101,11 @@ class stuffgetter_plan_t
 
     public:
         /// see constants below  
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int8_t   NONE = 0;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int8_t   POSITION = 1;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int8_t   IMPEDANCE = 2;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int8_t   STIFF = 3;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int8_t   COMPLIANT = 4;
+        static constexpr int8_t   NONE = 0;
+        static constexpr int8_t   POSITION = 1;
+        static constexpr int8_t   IMPEDANCE = 2;
+        static constexpr int8_t   STIFF = 3;
+        static constexpr int8_t   COMPLIANT = 4;
 
     public:
         /**
