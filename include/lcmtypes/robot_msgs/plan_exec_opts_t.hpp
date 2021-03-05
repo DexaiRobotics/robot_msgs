@@ -16,26 +16,10 @@ namespace robot_msgs
 class plan_exec_opts_t
 {
     public:
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  DEFAULT = 0;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  MOVE_UNTIL_STOP = 1;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  RETRACT_FROM_STOP = 2;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  OFFSET_TRAJ = 3;
+        static constexpr int16_t  DEFAULT = 0;
+        static constexpr int16_t  MOVE_UNTIL_STOP = 1;
+        static constexpr int16_t  RETRACT_FROM_STOP = 2;
+        static constexpr int16_t  OFFSET_TRAJ = 3;
 
     public:
         /**
