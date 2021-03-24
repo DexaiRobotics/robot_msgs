@@ -1,5 +1,6 @@
 string log_folder_path
 string log_filename
+string exclude_pattern
 
 --- 
 
