@@ -13,3 +13,6 @@ from .robot_spline_t import robot_spline_t
 from .string_t import string_t
 from .stuffgetter_plan_t import stuffgetter_plan_t
 from .trigger_t import trigger_t
+from .lcmt_piecewise_polynomial import lcmt_piecewise_polynomial
+from .lcmt_polynomial import lcmt_polynomial
+from .lcmt_polynomial_matrix import lcmt_polynomial_matrix

@@ -9,16 +9,16 @@ except ImportError:
     from io import BytesIO
 import struct
 
-import drake.lcmt_piecewise_polynomial
-
 import robot_msgs.robot_joint
+
+import robot_msgs.lcmt_piecewise_polynomial
 
 import bot_core.position_3d_t
 
 class robot_spline_t(object):
     __slots__ = ["utime", "robot_name", "num_states", "piecewise_polynomial", "dof", "robot_joints", "cartesian_goal", "exec_opt"]
 
-    __typenames__ = ["int64_t", "string", "int32_t", "drake.lcmt_piecewise_polynomial", "int32_t", "robot_msgs.robot_joint", "bot_core.position_3d_t", "int16_t"]
+    __typenames__ = ["int64_t", "string", "int32_t", "robot_msgs.lcmt_piecewise_polynomial", "int32_t", "robot_msgs.robot_joint", "bot_core.position_3d_t", "int16_t"]
 
     __dimensions__ = [None, None, None, None, None, ["dof"], None, None]
 
@@ -26,7 +26,7 @@ class robot_spline_t(object):
         self.utime = 0
         self.robot_name = ""
         self.num_states = 0
-        self.piecewise_polynomial = drake.lcmt_piecewise_polynomial()
+        self.piecewise_polynomial = robot_msgs.lcmt_piecewise_polynomial()
         self.dof = 0
         self.robot_joints = []
         self.cartesian_goal = bot_core.position_3d_t()
@@ -45,7 +45,7 @@ class robot_spline_t(object):
         buf.write(__robot_name_encoded)
         buf.write(b"\0")
         buf.write(struct.pack(">i", self.num_states))
-        assert self.piecewise_polynomial._get_packed_fingerprint() == drake.lcmt_piecewise_polynomial._get_packed_fingerprint()
+        assert self.piecewise_polynomial._get_packed_fingerprint() == robot_msgs.lcmt_piecewise_polynomial._get_packed_fingerprint()
         self.piecewise_polynomial._encode_one(buf)
         buf.write(struct.pack(">i", self.dof))
         for i0 in range(self.dof):
@@ -71,7 +71,7 @@ class robot_spline_t(object):
         __robot_name_len = struct.unpack('>I', buf.read(4))[0]
         self.robot_name = buf.read(__robot_name_len)[:-1].decode('utf-8', 'replace')
         self.num_states = struct.unpack(">i", buf.read(4))[0]
-        self.piecewise_polynomial = drake.lcmt_piecewise_polynomial._decode_one(buf)
+        self.piecewise_polynomial = robot_msgs.lcmt_piecewise_polynomial._decode_one(buf)
         self.dof = struct.unpack(">i", buf.read(4))[0]
         self.robot_joints = []
         for i0 in range(self.dof):
@@ -84,7 +84,7 @@ class robot_spline_t(object):
     def _get_hash_recursive(parents):
         if robot_spline_t in parents: return 0
         newparents = parents + [robot_spline_t]
-        tmphash = (0xed0a1268ba000244+ drake.lcmt_piecewise_polynomial._get_hash_recursive(newparents)+ robot_msgs.robot_joint._get_hash_recursive(newparents)+ bot_core.position_3d_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
+        tmphash = (0xed0a1268ba000244+ robot_msgs.lcmt_piecewise_polynomial._get_hash_recursive(newparents)+ robot_msgs.robot_joint._get_hash_recursive(newparents)+ bot_core.position_3d_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
