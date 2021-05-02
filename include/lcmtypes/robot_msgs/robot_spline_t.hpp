@@ -11,7 +11,7 @@
 
 #include <string>
 #include <vector>
-#include "drake/lcmt_piecewise_polynomial.hpp"
+#include "robot_msgs/lcmt_piecewise_polynomial.hpp"
 #include "robot_msgs/robot_joint.hpp"
 #include "bot_core/position_3d_t.hpp"
 
@@ -27,7 +27,7 @@ class robot_spline_t
 
         int32_t    num_states;
 
-        drake::lcmt_piecewise_polynomial piecewise_polynomial;
+        robot_msgs::lcmt_piecewise_polynomial piecewise_polynomial;
 
         int32_t    dof;
 
@@ -233,7 +233,7 @@ uint64_t robot_spline_t::_computeHash(const __lcm_hash_ptr *p)
     const __lcm_hash_ptr cp = { p, robot_spline_t::getHash };
 
     uint64_t hash = 0xed0a1268ba000244LL +
-         drake::lcmt_piecewise_polynomial::_computeHash(&cp) +
+         robot_msgs::lcmt_piecewise_polynomial::_computeHash(&cp) +
          robot_msgs::robot_joint::_computeHash(&cp) +
          bot_core::position_3d_t::_computeHash(&cp);
 
