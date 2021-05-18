@@ -35,7 +35,7 @@ class robot_status_t
 
         double     EE_T_K[16];
 
-        double     m_ee{};
+        double     m_ee;
 
         double     I_ee[9];
 
@@ -235,7 +235,7 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->EE_T_K[0], 16);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->m_ee{}, 1);
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->m_ee, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->I_ee[0], 9);
@@ -412,7 +412,7 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->EE_T_K[0], 16);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->m_ee{}, 1);
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->m_ee, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->I_ee[0], 9);
@@ -636,7 +636,7 @@ uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *p)
             return 0;
     const __lcm_hash_ptr cp = { p, robot_status_t::getHash };
 
-    uint64_t hash = 0xd00145a0c3921ed5LL +
+    uint64_t hash = 0x94ba9a16efb0ddf8LL +
          robot_msgs::robot_modes_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);
