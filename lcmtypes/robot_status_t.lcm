@@ -13,7 +13,7 @@ struct robot_status_t {
   double NE_T_EE[16];
   double EE_T_K[16];
 
-  double m_ee{};
+  double m_ee;
   double I_ee[9];
   double F_x_Cee[3];
 
