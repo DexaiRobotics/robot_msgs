@@ -47,7 +47,7 @@ class robot_status_t
 
         double     F_x_Cload[3];
 
-        double     m_total{};
+        double     m_total;
 
         double     I_total[9];
 
@@ -253,7 +253,7 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->F_x_Cload[0], 3);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->m_total{}, 1);
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->m_total, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->I_total[0], 9);
@@ -430,7 +430,7 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->F_x_Cload[0], 3);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->m_total{}, 1);
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->m_total, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->I_total[0], 9);
@@ -636,7 +636,7 @@ uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *p)
             return 0;
     const __lcm_hash_ptr cp = { p, robot_status_t::getHash };
 
-    uint64_t hash = 0x94ba9a16efb0ddf8LL +
+    uint64_t hash = 0x4c2818ccf2214fb4LL +
          robot_msgs::robot_modes_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);
