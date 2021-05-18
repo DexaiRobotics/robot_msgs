@@ -23,8 +23,6 @@ class robot_status_t
 
         int32_t    num_joints;
 
-        std::vector< double > joint_position_measured;
-
         double     O_T_EE[16];
 
         double     O_T_EE_d[16];
@@ -43,7 +41,7 @@ class robot_status_t
 
         double     F_x_Cee[3];
 
-        double     m_load{};
+        double     m_load;
 
         double     I_load[9];
 
@@ -219,11 +217,6 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __int32_t_encode_array(buf, offset + pos, maxlen - pos, &this->num_joints, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    if(this->num_joints > 0) {
-        tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->joint_position_measured[0], this->num_joints);
-        if(tlen < 0) return tlen; else pos += tlen;
-    }
-
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE[0], 16);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -251,7 +244,7 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->F_x_Cee[0], 3);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->m_load{}, 1);
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->m_load, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->I_load[0], 9);
@@ -401,12 +394,6 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __int32_t_decode_array(buf, offset + pos, maxlen - pos, &this->num_joints, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    if(this->num_joints) {
-        this->joint_position_measured.resize(this->num_joints);
-        tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->joint_position_measured[0], this->num_joints);
-        if(tlen < 0) return tlen; else pos += tlen;
-    }
-
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE[0], 16);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -434,7 +421,7 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->F_x_Cee[0], 3);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->m_load{}, 1);
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->m_load, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->I_load[0], 9);
@@ -592,7 +579,6 @@ int robot_status_t::_getEncodedSizeNoHash() const
     int enc_size = 0;
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int32_t_encoded_array_size(NULL, 1);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __double_encoded_array_size(NULL, 16);
     enc_size += __double_encoded_array_size(NULL, 16);
     enc_size += __double_encoded_array_size(NULL, 16);
@@ -650,7 +636,7 @@ uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *p)
             return 0;
     const __lcm_hash_ptr cp = { p, robot_status_t::getHash };
 
-    uint64_t hash = 0x79e5f8abd1a398f8LL +
+    uint64_t hash = 0xd00145a0c3921ed5LL +
          robot_msgs::robot_modes_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);

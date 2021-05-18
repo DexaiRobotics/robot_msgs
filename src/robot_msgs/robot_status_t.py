@@ -12,16 +12,15 @@ import struct
 import robot_msgs.robot_modes_t
 
 class robot_status_t(object):
-    __slots__ = ["utime", "num_joints", "joint_position_measured", "O_T_EE", "O_T_EE_d", "F_T_EE", "F_T_NE", "NE_T_EE", "EE_T_K", "m_ee{}", "I_ee", "F_x_Cee", "m_load{}", "I_load", "F_x_Cload", "m_total{}", "I_total", "F_x_Ctotal", "elbow", "elbow_d", "elbow_c", "delbow_c", "ddelbow_c", "tau_J", "tau_J_d", "dtau_J", "q", "q_d", "dq", "dq_d", "ddq_d", "joint_contact", "cartesian_contact", "joint_collision", "cartesian_collision", "tau_ext_hat_filtered", "O_F_ext_hat_K", "K_F_ext_hat_K", "O_dP_EE_d", "O_T_EE_c", "O_dP_EE_c", "O_ddP_EE_c", "theta", "dtheta", "robot_mode", "control_command_success_rate{}", "current_plan_utime", "plan_start_utime", "plan_exec_frac"]
+    __slots__ = ["utime", "num_joints", "O_T_EE", "O_T_EE_d", "F_T_EE", "F_T_NE", "NE_T_EE", "EE_T_K", "m_ee{}", "I_ee", "F_x_Cee", "m_load", "I_load", "F_x_Cload", "m_total{}", "I_total", "F_x_Ctotal", "elbow", "elbow_d", "elbow_c", "delbow_c", "ddelbow_c", "tau_J", "tau_J_d", "dtau_J", "q", "q_d", "dq", "dq_d", "ddq_d", "joint_contact", "cartesian_contact", "joint_collision", "cartesian_collision", "tau_ext_hat_filtered", "O_F_ext_hat_K", "K_F_ext_hat_K", "O_dP_EE_d", "O_T_EE_c", "O_dP_EE_c", "O_ddP_EE_c", "theta", "dtheta", "robot_mode", "control_command_success_rate{}", "current_plan_utime", "plan_start_utime", "plan_exec_frac"]
 
-    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "robot_msgs.robot_modes_t", "double", "int64_t", "int64_t", "int64_t"]
+    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "robot_msgs.robot_modes_t", "double", "int64_t", "int64_t", "int64_t"]
 
-    __dimensions__ = [None, None, ["num_joints"], [16], [16], [16], [16], [16], [16], None, [9], [3], None, [9], [3], None, [9], [3], [2], [2], [2], [2], [2], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], [6], ["num_joints"], [6], ["num_joints"], [6], [6], [6], [16], [6], [6], ["num_joints"], ["num_joints"], None, None, None, None, None]
+    __dimensions__ = [None, None, [16], [16], [16], [16], [16], [16], None, [9], [3], None, [9], [3], None, [9], [3], [2], [2], [2], [2], [2], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], [6], ["num_joints"], [6], ["num_joints"], [6], [6], [6], [16], [6], [6], ["num_joints"], ["num_joints"], None, None, None, None, None]
 
     def __init__(self):
         self.utime = 0
         self.num_joints = 0
-        self.joint_position_measured = []
         self.O_T_EE = [ 0.0 for dim0 in range(16) ]
         self.O_T_EE_d = [ 0.0 for dim0 in range(16) ]
         self.F_T_EE = [ 0.0 for dim0 in range(16) ]
@@ -31,7 +30,7 @@ class robot_status_t(object):
         self.m_ee{} = 0.0
         self.I_ee = [ 0.0 for dim0 in range(9) ]
         self.F_x_Cee = [ 0.0 for dim0 in range(3) ]
-        self.m_load{} = 0.0
+        self.m_load = 0.0
         self.I_load = [ 0.0 for dim0 in range(9) ]
         self.F_x_Cload = [ 0.0 for dim0 in range(3) ]
         self.m_total{} = 0.0
@@ -77,7 +76,6 @@ class robot_status_t(object):
 
     def _encode_one(self, buf):
         buf.write(struct.pack(">qi", self.utime, self.num_joints))
-        buf.write(struct.pack('>%dd' % self.num_joints, *self.joint_position_measured[:self.num_joints]))
         buf.write(struct.pack('>16d', *self.O_T_EE[:16]))
         buf.write(struct.pack('>16d', *self.O_T_EE_d[:16]))
         buf.write(struct.pack('>16d', *self.F_T_EE[:16]))
@@ -87,7 +85,7 @@ class robot_status_t(object):
         buf.write(struct.pack(">d", self.m_ee{}))
         buf.write(struct.pack('>9d', *self.I_ee[:9]))
         buf.write(struct.pack('>3d', *self.F_x_Cee[:3]))
-        buf.write(struct.pack(">d", self.m_load{}))
+        buf.write(struct.pack(">d", self.m_load))
         buf.write(struct.pack('>9d', *self.I_load[:9]))
         buf.write(struct.pack('>3d', *self.F_x_Cload[:3]))
         buf.write(struct.pack(">d", self.m_total{}))
@@ -136,7 +134,6 @@ class robot_status_t(object):
     def _decode_one(buf):
         self = robot_status_t()
         self.utime, self.num_joints = struct.unpack(">qi", buf.read(12))
-        self.joint_position_measured = struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8))
         self.O_T_EE = struct.unpack('>16d', buf.read(128))
         self.O_T_EE_d = struct.unpack('>16d', buf.read(128))
         self.F_T_EE = struct.unpack('>16d', buf.read(128))
@@ -146,7 +143,7 @@ class robot_status_t(object):
         self.m_ee{} = struct.unpack(">d", buf.read(8))[0]
         self.I_ee = struct.unpack('>9d', buf.read(72))
         self.F_x_Cee = struct.unpack('>3d', buf.read(24))
-        self.m_load{} = struct.unpack(">d", buf.read(8))[0]
+        self.m_load = struct.unpack(">d", buf.read(8))[0]
         self.I_load = struct.unpack('>9d', buf.read(72))
         self.F_x_Cload = struct.unpack('>3d', buf.read(24))
         self.m_total{} = struct.unpack(">d", buf.read(8))[0]
@@ -186,7 +183,7 @@ class robot_status_t(object):
     def _get_hash_recursive(parents):
         if robot_status_t in parents: return 0
         newparents = parents + [robot_status_t]
-        tmphash = (0x79e5f8abd1a398f8+ robot_msgs.robot_modes_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
+        tmphash = (0xd00145a0c3921ed5+ robot_msgs.robot_modes_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
