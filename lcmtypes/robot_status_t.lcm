@@ -6,8 +6,6 @@ struct robot_status_t {
 
   int32_t num_joints;
 
-  double joint_position_measured[num_joints];
-
   double O_T_EE[16];
   double O_T_EE_d[16];
   double F_T_EE[16];
@@ -19,7 +17,7 @@ struct robot_status_t {
   double I_ee[9];
   double F_x_Cee[3];
 
-  double m_load{};
+  double m_load;
   double I_load[9];
   double F_x_Cload[3];
   
