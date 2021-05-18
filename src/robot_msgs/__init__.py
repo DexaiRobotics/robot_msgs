@@ -16,3 +16,5 @@ from .trigger_t import trigger_t
 from .lcmt_piecewise_polynomial import lcmt_piecewise_polynomial
 from .lcmt_polynomial import lcmt_polynomial
 from .lcmt_polynomial_matrix import lcmt_polynomial_matrix
+from .robot_modes_t import robot_modes_t
+from .robot_status_t import robot_status_t
