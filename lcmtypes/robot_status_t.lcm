@@ -21,7 +21,7 @@ struct robot_status_t {
   double I_load[9];
   double F_x_Cload[3];
   
-  double m_total{};
+  double m_total;
   double I_total[9];
   double F_x_Ctotal[3];
 
