@@ -107,7 +107,7 @@ class robot_status_t
 
         robot_msgs::robot_modes_t robot_mode;
 
-        double     control_command_success_rate{};
+        double     control_command_success_rate;
 
         int64_t    current_plan_utime;
 
@@ -369,7 +369,7 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = this->robot_mode._encodeNoHash(buf, offset + pos, maxlen - pos);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->control_command_success_rate{}, 1);
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->control_command_success_rate, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->current_plan_utime, 1);
@@ -559,7 +559,7 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = this->robot_mode._decodeNoHash(buf, offset + pos, maxlen - pos);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->control_command_success_rate{}, 1);
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->control_command_success_rate, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->current_plan_utime, 1);
@@ -636,7 +636,7 @@ uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *p)
             return 0;
     const __lcm_hash_ptr cp = { p, robot_status_t::getHash };
 
-    uint64_t hash = 0x4c2818ccf2214fb4LL +
+    uint64_t hash = 0xea4313bd9ce7396dLL +
          robot_msgs::robot_modes_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);
