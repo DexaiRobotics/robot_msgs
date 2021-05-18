@@ -1,0 +1,7 @@
+package robot_msgs;
+
+struct robot_modes_t
+{
+    const int16_t kOther = 0, kIdle = 1, kMove = 2, kGuiding = 3, kReflex = 4, kUserStopped = 5, kAutomaticErrorRecovery = 6;
+    
+}

@@ -1,0 +1,64 @@
+package robot_msgs;
+
+struct robot_status_t {
+  // The timestamp in microseconds.
+  int64_t utime;
+
+  int32_t num_joints;
+
+  double joint_position_measured[num_joints];
+
+  double O_T_EE[16];
+  double O_T_EE_d[16];
+  double F_T_EE[16];
+  double F_T_NE[16];
+  double NE_T_EE[16];
+  double EE_T_K[16];
+
+  double m_ee{};
+  double I_ee[9];
+  double F_x_Cee[3];
+
+  double m_load{};
+  double I_load[9];
+  double F_x_Cload[3];
+  
+  double m_total{};
+  double I_total[9];
+  double F_x_Ctotal[3];
+
+  double elbow[2];
+  double elbow_d[2];
+  double elbow_c[2];
+  double delbow_c[2];
+  double ddelbow_c[2];
+  double tau_J[num_joints];
+  double tau_J_d[num_joints];
+  double dtau_J[num_joints];
+  double q[num_joints];
+  double q_d[num_joints];
+  double dq[num_joints];
+  double dq_d[num_joints];
+  double ddq_d[num_joints];
+  double joint_contact[num_joints];
+  double cartesian_contact[6];
+  double joint_collision[num_joints];
+  double cartesian_collision[6];
+  double tau_ext_hat_filtered[num_joints];
+  double O_F_ext_hat_K[6];
+  double K_F_ext_hat_K[6];
+  double O_dP_EE_d[6];
+  double O_T_EE_c[16];
+  double O_dP_EE_c[6];
+  double O_ddP_EE_c[6];
+  double theta[num_joints];
+  double dtheta[num_joints];
+
+  robot_modes_t robot_mode;
+
+  double control_command_success_rate{};
+
+  int64_t current_plan_utime;
+  int64_t plan_start_utime;
+  int64_t plan_exec_frac;
+}
