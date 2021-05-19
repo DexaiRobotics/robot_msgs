@@ -52,7 +52,7 @@ struct robot_status_t {
   double theta[num_joints];
   double dtheta[num_joints];
 
-  robot_modes_t robot_mode;
+  int16_t robot_mode;
 
   double control_command_success_rate;
 
