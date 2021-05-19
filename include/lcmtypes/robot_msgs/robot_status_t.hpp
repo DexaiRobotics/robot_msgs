@@ -10,7 +10,6 @@
 #include <lcm/lcm_coretypes.h>
 
 #include <vector>
-#include "robot_msgs/robot_modes_t.hpp"
 
 namespace robot_msgs
 {
@@ -105,7 +104,7 @@ class robot_status_t
 
         std::vector< double > dtheta;
 
-        robot_msgs::robot_modes_t robot_mode;
+        int16_t    robot_mode;
 
         double     control_command_success_rate;
 
@@ -366,7 +365,7 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
         if(tlen < 0) return tlen; else pos += tlen;
     }
 
-    tlen = this->robot_mode._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __int16_t_encode_array(buf, offset + pos, maxlen - pos, &this->robot_mode, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->control_command_success_rate, 1);
@@ -556,7 +555,7 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
         if(tlen < 0) return tlen; else pos += tlen;
     }
 
-    tlen = this->robot_mode._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __int16_t_decode_array(buf, offset + pos, maxlen - pos, &this->robot_mode, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->control_command_success_rate, 1);
@@ -620,7 +619,7 @@ int robot_status_t::_getEncodedSizeNoHash() const
     enc_size += __double_encoded_array_size(NULL, 6);
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += this->robot_mode._getEncodedSizeNoHash();
+    enc_size += __int16_t_encoded_array_size(NULL, 1);
     enc_size += __double_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
@@ -628,17 +627,9 @@ int robot_status_t::_getEncodedSizeNoHash() const
     return enc_size;
 }
 
-uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *p)
+uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    const __lcm_hash_ptr *fp;
-    for(fp = p; fp != NULL; fp = fp->parent)
-        if(fp->v == robot_status_t::getHash)
-            return 0;
-    const __lcm_hash_ptr cp = { p, robot_status_t::getHash };
-
-    uint64_t hash = 0xea4313bd9ce7396dLL +
-         robot_msgs::robot_modes_t::_computeHash(&cp);
-
+    uint64_t hash = 0xa2255c29467c7270LL;
     return (hash<<1) + ((hash>>63)&1);
 }
 

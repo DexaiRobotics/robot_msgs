@@ -9,12 +9,10 @@ except ImportError:
     from io import BytesIO
 import struct
 
-import robot_msgs.robot_modes_t
-
 class robot_status_t(object):
     __slots__ = ["utime", "num_joints", "O_T_EE", "O_T_EE_d", "F_T_EE", "F_T_NE", "NE_T_EE", "EE_T_K", "m_ee", "I_ee", "F_x_Cee", "m_load", "I_load", "F_x_Cload", "m_total", "I_total", "F_x_Ctotal", "elbow", "elbow_d", "elbow_c", "delbow_c", "ddelbow_c", "tau_J", "tau_J_d", "dtau_J", "q", "q_d", "dq", "dq_d", "ddq_d", "joint_contact", "cartesian_contact", "joint_collision", "cartesian_collision", "tau_ext_hat_filtered", "O_F_ext_hat_K", "K_F_ext_hat_K", "O_dP_EE_d", "O_T_EE_c", "O_dP_EE_c", "O_ddP_EE_c", "theta", "dtheta", "robot_mode", "control_command_success_rate", "current_plan_utime", "plan_start_utime", "plan_exec_frac"]
 
-    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "robot_msgs.robot_modes_t", "double", "int64_t", "int64_t", "int64_t"]
+    __typenames__ = ["int64_t", "int32_t", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "int16_t", "double", "int64_t", "int64_t", "int64_t"]
 
     __dimensions__ = [None, None, [16], [16], [16], [16], [16], [16], None, [9], [3], None, [9], [3], None, [9], [3], [2], [2], [2], [2], [2], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], ["num_joints"], [6], ["num_joints"], [6], ["num_joints"], [6], [6], [6], [16], [6], [6], ["num_joints"], ["num_joints"], None, None, None, None, None]
 
@@ -62,7 +60,7 @@ class robot_status_t(object):
         self.O_ddP_EE_c = [ 0.0 for dim0 in range(6) ]
         self.theta = []
         self.dtheta = []
-        self.robot_mode = robot_msgs.robot_modes_t()
+        self.robot_mode = 0
         self.control_command_success_rate = 0.0
         self.current_plan_utime = 0
         self.plan_start_utime = 0
@@ -117,9 +115,7 @@ class robot_status_t(object):
         buf.write(struct.pack('>6d', *self.O_ddP_EE_c[:6]))
         buf.write(struct.pack('>%dd' % self.num_joints, *self.theta[:self.num_joints]))
         buf.write(struct.pack('>%dd' % self.num_joints, *self.dtheta[:self.num_joints]))
-        assert self.robot_mode._get_packed_fingerprint() == robot_msgs.robot_modes_t._get_packed_fingerprint()
-        self.robot_mode._encode_one(buf)
-        buf.write(struct.pack(">dqqq", self.control_command_success_rate, self.current_plan_utime, self.plan_start_utime, self.plan_exec_frac))
+        buf.write(struct.pack(">hdqqq", self.robot_mode, self.control_command_success_rate, self.current_plan_utime, self.plan_start_utime, self.plan_exec_frac))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -175,15 +171,13 @@ class robot_status_t(object):
         self.O_ddP_EE_c = struct.unpack('>6d', buf.read(48))
         self.theta = struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8))
         self.dtheta = struct.unpack('>%dd' % self.num_joints, buf.read(self.num_joints * 8))
-        self.robot_mode = robot_msgs.robot_modes_t._decode_one(buf)
-        self.control_command_success_rate, self.current_plan_utime, self.plan_start_utime, self.plan_exec_frac = struct.unpack(">dqqq", buf.read(32))
+        self.robot_mode, self.control_command_success_rate, self.current_plan_utime, self.plan_start_utime, self.plan_exec_frac = struct.unpack(">hdqqq", buf.read(34))
         return self
     _decode_one = staticmethod(_decode_one)
 
     def _get_hash_recursive(parents):
         if robot_status_t in parents: return 0
-        newparents = parents + [robot_status_t]
-        tmphash = (0xea4313bd9ce7396d+ robot_msgs.robot_modes_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
+        tmphash = (0xa2255c29467c7270) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
