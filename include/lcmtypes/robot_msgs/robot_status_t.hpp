@@ -20,99 +20,251 @@ class robot_status_t
         /// The timestamp in microseconds.
         int64_t    utime;
 
+        /// Number of joints
         int32_t    num_joints;
 
-        double     O_T_EE[16];
-
-        double     O_T_EE_d[16];
-
-        double     F_T_EE[16];
-
-        double     F_T_NE[16];
-
-        double     NE_T_EE[16];
-
-        double     EE_T_K[16];
-
-        double     m_ee;
-
-        double     I_ee[9];
-
-        double     F_x_Cee[3];
-
-        double     m_load;
-
-        double     I_load[9];
-
-        double     F_x_Cload[3];
-
-        double     m_total;
-
-        double     I_total[9];
-
-        double     F_x_Ctotal[3];
-
-        double     elbow[2];
-
-        double     elbow_d[2];
-
-        double     elbow_c[2];
-
-        double     delbow_c[2];
-
-        double     ddelbow_c[2];
-
-        std::vector< double > tau_J;
-
-        std::vector< double > tau_J_d;
-
-        std::vector< double > dtau_J;
-
-        std::vector< double > q;
-
-        std::vector< double > q_d;
-
-        std::vector< double > dq;
-
-        std::vector< double > dq_d;
-
-        std::vector< double > ddq_d;
-
-        std::vector< double > joint_contact;
-
-        double     cartesian_contact[6];
-
-        std::vector< double > joint_collision;
-
-        double     cartesian_collision[6];
-
-        std::vector< double > tau_ext_hat_filtered;
-
-        double     O_F_ext_hat_K[6];
-
-        double     K_F_ext_hat_K[6];
-
-        double     O_dP_EE_d[6];
-
+        /**
+         * Pose is represented as a 4x4 matrix in 
+         * column-major format.
+         * Last commanded end effector pose of motion generation in base frame.
+         */
         double     O_T_EE_c[16];
 
+        /// Measured end effector pose in base frame.
+        double     O_T_EE[16];
+
+        /// Last desired end effector pose of motion generation in base frame.
+        double     O_T_EE_d[16];
+
+        /// End effector frame pose in flange frame.
+        double     F_T_EE[16];
+
+        /// Nominal end effector frame pose in flange frame.
+        double     F_T_NE[16];
+
+        /// End effector frame pose in nominal end effector frame.
+        double     NE_T_EE[16];
+
+        /// Stiffness frame pose in end effector frame.
+        double     EE_T_K[16];
+
+        /// Configured mass of the end effector.
+        double     m_ee;
+
+        /**
+         * Configured rotational inertia matrix of the end effector load with
+         * respect to center of mass.
+         */
+        double     I_ee[9];
+
+        /**
+         * Configured center of mass of the end effector load with respect
+         * to flange frame.
+         */
+        double     F_x_Cee[3];
+
+        /// Configured mass of the external load.
+        double     m_load;
+
+        /**
+         * Configured rotational inertia matrix of the external load with respect
+         * to center of mass.
+         */
+        double     I_load[9];
+
+        /// Configured center of mass of the external load with respect to flange frame.
+        double     F_x_Cload[3];
+
+        /// Sum of the mass of the end effector and the external load.
+        double     m_total;
+
+        /**
+         * Combined rotational inertia matrix of the end effector load and the external load
+         * with respect to the center of mass.
+         */
+        double     I_total[9];
+
+        /**
+         * Combined center of mass of the end effector load and the external load with respect
+         * to flange frame.
+         */
+        double     F_x_Ctotal[3];
+
+        /**
+         * For all elbow config data:
+         * The values of the array are:
+         * [0] Position of the 3rd joint in [rad].
+         * [1] Sign of the 4th joint. Can be +1 or -1.
+         * Elbow configuration.
+         */
+        double     elbow[2];
+
+        /// Desired elbow configuration
+        double     elbow_d[2];
+
+        /// Commanded elbow configuration
+        double     elbow_c[2];
+
+        /// Elbow configuration.
+        double     delbow_c[2];
+
+        /// Commanded elbow acceleration.
+        double     ddelbow_c[2];
+
+        /**
+         * Measured link-side joint torque sensor signals.
+         * Unit: Nm
+         */
+        std::vector< double > tau_J;
+
+        /**
+         * Desired link-side joint torque sensor signals without gravity.
+         * Unit: Nm
+         */
+        std::vector< double > tau_J_d;
+
+        /**
+         * Derivative of measured link-side joint torque
+         * sensor signals.
+         * Unit: N.m^-1
+         */
+        std::vector< double > dtau_J;
+
+        /**
+         * Measured joint position.
+         * Unit: rad
+         */
+        std::vector< double > q;
+
+        /**
+         * Desired joint position.
+         * Unit: rad
+         */
+        std::vector< double > q_d;
+
+        /**
+         * Measured joint velocity
+         * Unit: rad.s^-1
+         */
+        std::vector< double > dq;
+
+        /**
+         * Desired joint velocity
+         * Unit: rad.s^-1
+         */
+        std::vector< double > dq_d;
+
+        /**
+         * Desired joint acceleration.
+         * Unit: rad.s^-2
+         */
+        std::vector< double > ddq_d;
+
+        /**
+         * Indicates which contact level is activated in which joint.
+         * After contact disappears, value turns to zero.
+         */
+        std::vector< double > joint_contact;
+
+        /**
+         * Indicates which contact level is activated in which
+         * Cartesian dimension (X, Y, Z, R, P, Y).
+         * After contact disappears, the value turns to zero.
+         */
+        double     cartesian_contact[6];
+
+        /**
+         * Indicates which contact level is activated in which joint.
+         * After contact disappears, the value stays the same until a
+         * reset command is sent.
+         */
+        std::vector< double > joint_collision;
+
+        /**
+         * Indicates which contact level is activated in which
+         * Cartesian dimension (X, Y, Z, R, P, Y).
+         * After contact disappears, the value stays the same
+         * until a reset command is sent.
+         */
+        double     cartesian_collision[6];
+
+        /**
+         * External torque, filtered.
+         * Unit: Nm
+         */
+        std::vector< double > tau_ext_hat_filtered;
+
+        /**
+         * Estimated external wrench (force, torque) acting on stiffness frame,
+         * expressed relative to the base frame.
+         * Units: [N, N, N, Nm, Nm, Nm]
+         */
+        double     O_F_ext_hat_K[6];
+
+        /**
+         * Estimated external wrench (force, torque) acting on stiffness
+         * frame, expressed relative to the stiffness frame.
+         * Units: [N, N, N, Nm, Nm, Nm]
+         */
+        double     K_F_ext_hat_K[6];
+
+        /**
+         * Desired end effector twist in base frame.
+         * Units: [m.s^-1, m.s^-1, m.s^-1, rad.s^-1, rad.s^-1, rad.s^-1]
+         */
+        double     O_dP_EE_d[6];
+
+        /**
+         * Last commanded end effector twist in base frame.
+         * Units: [m.s^-1, m.s^-1, m.s^-1, rad.s^-1, rad.s^-1, rad.s^-1]
+         */
         double     O_dP_EE_c[6];
 
+        /**
+         * Last commanded end effector acceleration in base frame.
+         * Units: [m.s^-2, m.s^-2, m.s^-2, rad.s^-2, rad.s^-2, rad.s^-2]
+         */
         double     O_ddP_EE_c[6];
 
+        /**
+         * Rotor position
+         * Unit:rad.s^-1
+         */
         std::vector< double > theta;
 
+        /**
+         * Rotor speed
+         * Unit:rad.s^-1
+         */
         std::vector< double > dtheta;
 
+        /**
+         * Enum describing robot's current mode:
+         * kOther, kIdle, kMove, kGuiding, kReflex,
+         * kUserStopped, kAutomaticErrorRecovery
+         */
         int16_t    robot_mode;
 
+        /**
+         * Percentage of the last 100 control commands that
+         * were successfully received by the robot.
+         */
         double     control_command_success_rate;
 
+        /**
+         * utime of the current plan.
+         * set to -1 if robot does not have a plan
+         */
         int64_t    current_plan_utime;
 
+        /// start utime of the current plan
         int64_t    plan_start_utime;
 
-        int64_t    plan_exec_frac;
+        /**
+         * plan completion fraction
+         * value in [0, 1] despite possibly being overtime
+         */
+        double     plan_exec_frac;
 
     public:
         /**
@@ -214,6 +366,9 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __int32_t_encode_array(buf, offset + pos, maxlen - pos, &this->num_joints, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE_c[0], 16);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE[0], 16);
@@ -346,9 +501,6 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->O_dP_EE_d[0], 6);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE_c[0], 16);
-    if(tlen < 0) return tlen; else pos += tlen;
-
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->O_dP_EE_c[0], 6);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -377,7 +529,7 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->plan_start_utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->plan_exec_frac, 1);
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->plan_exec_frac, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -391,6 +543,9 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __int32_t_decode_array(buf, offset + pos, maxlen - pos, &this->num_joints, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE_c[0], 16);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE[0], 16);
@@ -534,9 +689,6 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->O_dP_EE_d[0], 6);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->O_T_EE_c[0], 16);
-    if(tlen < 0) return tlen; else pos += tlen;
-
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->O_dP_EE_c[0], 6);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -567,7 +719,7 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->plan_start_utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->plan_exec_frac, 1);
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->plan_exec_frac, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -584,37 +736,37 @@ int robot_status_t::_getEncodedSizeNoHash() const
     enc_size += __double_encoded_array_size(NULL, 16);
     enc_size += __double_encoded_array_size(NULL, 16);
     enc_size += __double_encoded_array_size(NULL, 16);
-    enc_size += __double_encoded_array_size(NULL, 1);
-    enc_size += __double_encoded_array_size(NULL, 9);
-    enc_size += __double_encoded_array_size(NULL, 3);
-    enc_size += __double_encoded_array_size(NULL, 1);
-    enc_size += __double_encoded_array_size(NULL, 9);
-    enc_size += __double_encoded_array_size(NULL, 3);
-    enc_size += __double_encoded_array_size(NULL, 1);
-    enc_size += __double_encoded_array_size(NULL, 9);
-    enc_size += __double_encoded_array_size(NULL, 3);
-    enc_size += __double_encoded_array_size(NULL, 2);
-    enc_size += __double_encoded_array_size(NULL, 2);
-    enc_size += __double_encoded_array_size(NULL, 2);
-    enc_size += __double_encoded_array_size(NULL, 2);
-    enc_size += __double_encoded_array_size(NULL, 2);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, 6);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, 6);
-    enc_size += __double_encoded_array_size(NULL, this->num_joints);
-    enc_size += __double_encoded_array_size(NULL, 6);
-    enc_size += __double_encoded_array_size(NULL, 6);
-    enc_size += __double_encoded_array_size(NULL, 6);
     enc_size += __double_encoded_array_size(NULL, 16);
+    enc_size += __double_encoded_array_size(NULL, 1);
+    enc_size += __double_encoded_array_size(NULL, 9);
+    enc_size += __double_encoded_array_size(NULL, 3);
+    enc_size += __double_encoded_array_size(NULL, 1);
+    enc_size += __double_encoded_array_size(NULL, 9);
+    enc_size += __double_encoded_array_size(NULL, 3);
+    enc_size += __double_encoded_array_size(NULL, 1);
+    enc_size += __double_encoded_array_size(NULL, 9);
+    enc_size += __double_encoded_array_size(NULL, 3);
+    enc_size += __double_encoded_array_size(NULL, 2);
+    enc_size += __double_encoded_array_size(NULL, 2);
+    enc_size += __double_encoded_array_size(NULL, 2);
+    enc_size += __double_encoded_array_size(NULL, 2);
+    enc_size += __double_encoded_array_size(NULL, 2);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, 6);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, 6);
+    enc_size += __double_encoded_array_size(NULL, this->num_joints);
+    enc_size += __double_encoded_array_size(NULL, 6);
+    enc_size += __double_encoded_array_size(NULL, 6);
+    enc_size += __double_encoded_array_size(NULL, 6);
     enc_size += __double_encoded_array_size(NULL, 6);
     enc_size += __double_encoded_array_size(NULL, 6);
     enc_size += __double_encoded_array_size(NULL, this->num_joints);
@@ -623,13 +775,13 @@ int robot_status_t::_getEncodedSizeNoHash() const
     enc_size += __double_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
-    enc_size += __int64_t_encoded_array_size(NULL, 1);
+    enc_size += __double_encoded_array_size(NULL, 1);
     return enc_size;
 }
 
 uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0xa2255c29467c7270LL;
+    uint64_t hash = 0xed8c186e0dc93b9cLL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
