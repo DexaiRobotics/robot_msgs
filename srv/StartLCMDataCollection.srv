@@ -6,5 +6,5 @@ string exclude_pattern
 
 bool success
 string message
-float free_space_threshold
-float free_space_available
+float32 free_space_threshold
+float32 free_space_available
