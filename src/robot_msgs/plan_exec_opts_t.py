@@ -19,7 +19,7 @@ class plan_exec_opts_t(object):
     DEFAULT = 0
     MOVE_UNTIL_STOP = 1
     RETRACT_FROM_STOP = 2
-    OFFSET_TRAJ = 3
+    OFFSET_TRAJ = 4
 
     def __init__(self):
         pass
