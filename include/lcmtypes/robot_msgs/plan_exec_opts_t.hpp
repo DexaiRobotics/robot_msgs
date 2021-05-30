@@ -20,8 +20,8 @@ class plan_exec_opts_t
         static constexpr int16_t  MOVE_UNTIL_STOP = 1;
         static constexpr int16_t  RETRACT_FROM_STOP = 2;
         static constexpr int16_t  OFFSET_TRAJ = 3;
-        static constexpr int16_t  MOVE_UNTIL_STOP_W_OFFSET_TRAJ_PLUS = 4;
-        static constexpr int16_t  RETRACT_FROM_STOP_W_OFFSET_TRAJ_PLUS = 5;
+        static constexpr int16_t  MOVE_UNTIL_STOP_W_OFFSET_TRAJ = 4;
+        static constexpr int16_t  RETRACT_FROM_STOP_W_OFFSET_TRAJ = 5;
 
     public:
         /**
