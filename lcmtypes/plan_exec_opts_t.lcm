@@ -2,5 +2,6 @@ package robot_msgs;
 
 struct plan_exec_opts_t
 {
-    const int16_t DEFAULT=0, MOVE_UNTIL_STOP=1, RETRACT_FROM_STOP=2, OFFSET_TRAJ=3, MOVE_UNTIL_STOP_W_OFFSET_TRAJ=4, RETRACT_FROM_STOP_W_OFFSET_TRAJ=5;
+    // Each plan exec option is a boolean flag corresponding to one bit
+    const int16_t DEFAULT=0, MOVE_UNTIL_STOP=1, RETRACT_FROM_STOP=2, OFFSET_TRAJ=4;
 }
