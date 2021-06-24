@@ -81,6 +81,7 @@ add_service_files(
   StartLCMDataCollection.srv
   GetImage.srv
   LoadFile.srv
+  ProcessImageToFloat.srv
 )
 
 ## Generate actions in the 'action' folder
