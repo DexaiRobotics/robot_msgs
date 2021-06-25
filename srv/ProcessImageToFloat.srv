@@ -2,5 +2,4 @@ sensor_msgs/Image image
 string message
 ---
 bool success
-string message
 float64 value
