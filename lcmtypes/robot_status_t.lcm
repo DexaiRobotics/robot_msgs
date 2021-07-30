@@ -189,4 +189,8 @@ struct robot_status_t {
   // plan completion fraction
   // value in [0, 1] despite possibly being overtime
   double plan_exec_frac;
+
+  // robot time
+  // value in [0.0, current_plan.end_time()] 
+  double robot_time;
 }
