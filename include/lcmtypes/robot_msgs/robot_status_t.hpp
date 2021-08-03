@@ -266,6 +266,12 @@ class robot_status_t
          */
         double     plan_exec_frac;
 
+        /**
+         * robot time
+         * value in [0.0, current_plan.end_time()] 
+         */
+        double     robot_time;
+
     public:
         /**
          * Encode a message into binary form.
@@ -532,6 +538,9 @@ int robot_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->plan_exec_frac, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->robot_time, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -722,6 +731,9 @@ int robot_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->plan_exec_frac, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->robot_time, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     return pos;
 }
 
@@ -776,12 +788,13 @@ int robot_status_t::_getEncodedSizeNoHash() const
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __double_encoded_array_size(NULL, 1);
+    enc_size += __double_encoded_array_size(NULL, 1);
     return enc_size;
 }
 
 uint64_t robot_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0xed8c186e0dc93b9cLL;
+    uint64_t hash = 0x7c777ba6462911cdLL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
