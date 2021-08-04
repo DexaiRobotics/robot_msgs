@@ -1,0 +1,7 @@
+package robot_msgs;
+
+struct twist_t
+{
+   drake.lcmt_point linear_velocity;
+   drake.lcmt_point angular_velocity;
+}
