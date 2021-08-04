@@ -9,12 +9,12 @@ except ImportError:
     from io import BytesIO
 import struct
 
-import bot_core.robot_state_t
+import robot_msgs.robot_state_t
 
 class stuffgetter_plan_t(object):
     __slots__ = ["utime", "robot_type", "utensil", "material", "container", "approach", "num_approach_plan_states", "approach_plan", "num_get_stuff_states", "get_stuff", "num_get_stuff_plan_states", "get_stuff_plan", "finish", "num_finish_plan_states", "finish_plan", "num_dispense_states", "dispense", "num_dispense_plan_states", "dispense_plan", "num_attach_tool_states", "attach_tool", "num_attach_tool_plan_states", "attach_tool_plan", "num_remove_tool_states", "remove_tool", "num_remove_tool_plan_states", "remove_tool_plan", "arm_control_type"]
 
-    __typenames__ = ["int64_t", "string", "string", "string", "string", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int32_t", "bot_core.robot_state_t", "int8_t"]
+    __typenames__ = ["int64_t", "string", "string", "string", "string", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int32_t", "robot_msgs.robot_state_t", "int8_t"]
 
     __dimensions__ = [None, None, None, None, None, None, None, ["num_approach_plan_states"], None, ["num_get_stuff_states"], None, ["num_get_stuff_plan_states"], None, None, ["num_finish_plan_states"], None, ["num_dispense_states"], None, ["num_dispense_plan_states"], None, ["num_attach_tool_states"], None, ["num_attach_tool_plan_states"], None, ["num_remove_tool_states"], None, ["num_remove_tool_plan_states"], None]
 
@@ -30,14 +30,14 @@ class stuffgetter_plan_t(object):
         self.utensil = ""
         self.material = ""
         self.container = ""
-        self.approach = bot_core.robot_state_t()
+        self.approach = robot_msgs.robot_state_t()
         self.num_approach_plan_states = 0
         self.approach_plan = []
         self.num_get_stuff_states = 0
         self.get_stuff = []
         self.num_get_stuff_plan_states = 0
         self.get_stuff_plan = []
-        self.finish = bot_core.robot_state_t()
+        self.finish = robot_msgs.robot_state_t()
         self.num_finish_plan_states = 0
         self.finish_plan = []
         self.num_dispense_states = 0
@@ -78,49 +78,49 @@ class stuffgetter_plan_t(object):
         buf.write(struct.pack('>I', len(__container_encoded)+1))
         buf.write(__container_encoded)
         buf.write(b"\0")
-        assert self.approach._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+        assert self.approach._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
         self.approach._encode_one(buf)
         buf.write(struct.pack(">i", self.num_approach_plan_states))
         for i0 in range(self.num_approach_plan_states):
-            assert self.approach_plan[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.approach_plan[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.approach_plan[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_get_stuff_states))
         for i0 in range(self.num_get_stuff_states):
-            assert self.get_stuff[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.get_stuff[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.get_stuff[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_get_stuff_plan_states))
         for i0 in range(self.num_get_stuff_plan_states):
-            assert self.get_stuff_plan[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.get_stuff_plan[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.get_stuff_plan[i0]._encode_one(buf)
-        assert self.finish._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+        assert self.finish._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
         self.finish._encode_one(buf)
         buf.write(struct.pack(">i", self.num_finish_plan_states))
         for i0 in range(self.num_finish_plan_states):
-            assert self.finish_plan[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.finish_plan[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.finish_plan[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_dispense_states))
         for i0 in range(self.num_dispense_states):
-            assert self.dispense[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.dispense[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.dispense[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_dispense_plan_states))
         for i0 in range(self.num_dispense_plan_states):
-            assert self.dispense_plan[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.dispense_plan[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.dispense_plan[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_attach_tool_states))
         for i0 in range(self.num_attach_tool_states):
-            assert self.attach_tool[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.attach_tool[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.attach_tool[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_attach_tool_plan_states))
         for i0 in range(self.num_attach_tool_plan_states):
-            assert self.attach_tool_plan[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.attach_tool_plan[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.attach_tool_plan[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_remove_tool_states))
         for i0 in range(self.num_remove_tool_states):
-            assert self.remove_tool[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.remove_tool[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.remove_tool[i0]._encode_one(buf)
         buf.write(struct.pack(">i", self.num_remove_tool_plan_states))
         for i0 in range(self.num_remove_tool_plan_states):
-            assert self.remove_tool_plan[i0]._get_packed_fingerprint() == bot_core.robot_state_t._get_packed_fingerprint()
+            assert self.remove_tool_plan[i0]._get_packed_fingerprint() == robot_msgs.robot_state_t._get_packed_fingerprint()
             self.remove_tool_plan[i0]._encode_one(buf)
         buf.write(struct.pack(">b", self.arm_control_type))
 
@@ -145,48 +145,48 @@ class stuffgetter_plan_t(object):
         self.material = buf.read(__material_len)[:-1].decode('utf-8', 'replace')
         __container_len = struct.unpack('>I', buf.read(4))[0]
         self.container = buf.read(__container_len)[:-1].decode('utf-8', 'replace')
-        self.approach = bot_core.robot_state_t._decode_one(buf)
+        self.approach = robot_msgs.robot_state_t._decode_one(buf)
         self.num_approach_plan_states = struct.unpack(">i", buf.read(4))[0]
         self.approach_plan = []
         for i0 in range(self.num_approach_plan_states):
-            self.approach_plan.append(bot_core.robot_state_t._decode_one(buf))
+            self.approach_plan.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_get_stuff_states = struct.unpack(">i", buf.read(4))[0]
         self.get_stuff = []
         for i0 in range(self.num_get_stuff_states):
-            self.get_stuff.append(bot_core.robot_state_t._decode_one(buf))
+            self.get_stuff.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_get_stuff_plan_states = struct.unpack(">i", buf.read(4))[0]
         self.get_stuff_plan = []
         for i0 in range(self.num_get_stuff_plan_states):
-            self.get_stuff_plan.append(bot_core.robot_state_t._decode_one(buf))
-        self.finish = bot_core.robot_state_t._decode_one(buf)
+            self.get_stuff_plan.append(robot_msgs.robot_state_t._decode_one(buf))
+        self.finish = robot_msgs.robot_state_t._decode_one(buf)
         self.num_finish_plan_states = struct.unpack(">i", buf.read(4))[0]
         self.finish_plan = []
         for i0 in range(self.num_finish_plan_states):
-            self.finish_plan.append(bot_core.robot_state_t._decode_one(buf))
+            self.finish_plan.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_dispense_states = struct.unpack(">i", buf.read(4))[0]
         self.dispense = []
         for i0 in range(self.num_dispense_states):
-            self.dispense.append(bot_core.robot_state_t._decode_one(buf))
+            self.dispense.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_dispense_plan_states = struct.unpack(">i", buf.read(4))[0]
         self.dispense_plan = []
         for i0 in range(self.num_dispense_plan_states):
-            self.dispense_plan.append(bot_core.robot_state_t._decode_one(buf))
+            self.dispense_plan.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_attach_tool_states = struct.unpack(">i", buf.read(4))[0]
         self.attach_tool = []
         for i0 in range(self.num_attach_tool_states):
-            self.attach_tool.append(bot_core.robot_state_t._decode_one(buf))
+            self.attach_tool.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_attach_tool_plan_states = struct.unpack(">i", buf.read(4))[0]
         self.attach_tool_plan = []
         for i0 in range(self.num_attach_tool_plan_states):
-            self.attach_tool_plan.append(bot_core.robot_state_t._decode_one(buf))
+            self.attach_tool_plan.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_remove_tool_states = struct.unpack(">i", buf.read(4))[0]
         self.remove_tool = []
         for i0 in range(self.num_remove_tool_states):
-            self.remove_tool.append(bot_core.robot_state_t._decode_one(buf))
+            self.remove_tool.append(robot_msgs.robot_state_t._decode_one(buf))
         self.num_remove_tool_plan_states = struct.unpack(">i", buf.read(4))[0]
         self.remove_tool_plan = []
         for i0 in range(self.num_remove_tool_plan_states):
-            self.remove_tool_plan.append(bot_core.robot_state_t._decode_one(buf))
+            self.remove_tool_plan.append(robot_msgs.robot_state_t._decode_one(buf))
         self.arm_control_type = struct.unpack(">b", buf.read(1))[0]
         return self
     _decode_one = staticmethod(_decode_one)
@@ -194,7 +194,7 @@ class stuffgetter_plan_t(object):
     def _get_hash_recursive(parents):
         if stuffgetter_plan_t in parents: return 0
         newparents = parents + [stuffgetter_plan_t]
-        tmphash = (0xe59fc54876338524+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)+ bot_core.robot_state_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
+        tmphash = (0xe59fc54876338524+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)+ robot_msgs.robot_state_t._get_hash_recursive(newparents)) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

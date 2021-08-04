@@ -33,11 +33,8 @@ That can be pip3 installed without any other catkin dependencies.
 
 ### Note on other system lcmtypes
 
-The original LCM definition of `bot_core` lcmtypes can be found here: https://github.com/openhumanoids/bot_core_lcmtypes.
-
 `drake` comes with several bundles of lcmtypes. The headers can be found in `/opt/drake/include/lcmtypes`; the python class definitions can be found in e.g.
 ```
 /opt/drake/lib/python3.6/site-packages/drake/lcmt_viewer_draw.py
 /opt/drake/lib/python3.6/site-packages/robotlocomotion/pose_t.py
-/opt/drake/lib/python3.6/site-packages/bot_core/gps_satellite_info_t.py
 ```

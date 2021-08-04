@@ -11,18 +11,18 @@
 
 #include <string>
 #include <vector>
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
-#include "bot_core/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
+#include "robot_msgs/robot_state_t.hpp"
 
 namespace robot_msgs
 {
@@ -46,55 +46,55 @@ class stuffgetter_plan_t
          * We store the key points to generate the trajectory and the full plans
          * Approach waypoint is reached via RRT
          */
-        bot_core::robot_state_t approach;
+        robot_msgs::robot_state_t approach;
 
         /// approach_plan links approach <----> get_stuff[0]
         int32_t    num_approach_plan_states;
 
-        std::vector< bot_core::robot_state_t > approach_plan;
+        std::vector< robot_msgs::robot_state_t > approach_plan;
 
         /// GetStuff Plan encodes the interaction with the material 
         int32_t    num_get_stuff_states;
 
-        std::vector< bot_core::robot_state_t > get_stuff;
+        std::vector< robot_msgs::robot_state_t > get_stuff;
 
         int32_t    num_get_stuff_plan_states;
 
-        std::vector< bot_core::robot_state_t > get_stuff_plan;
+        std::vector< robot_msgs::robot_state_t > get_stuff_plan;
 
         /// finish is a ready state before dispensing
-        bot_core::robot_state_t finish;
+        robot_msgs::robot_state_t finish;
 
         int32_t    num_finish_plan_states;
 
-        std::vector< bot_core::robot_state_t > finish_plan;
+        std::vector< robot_msgs::robot_state_t > finish_plan;
 
         /// dispense links finish <----> dispense_point and dispenses
         int32_t    num_dispense_states;
 
-        std::vector< bot_core::robot_state_t > dispense;
+        std::vector< robot_msgs::robot_state_t > dispense;
 
         int32_t    num_dispense_plan_states;
 
-        std::vector< bot_core::robot_state_t > dispense_plan;
+        std::vector< robot_msgs::robot_state_t > dispense_plan;
 
         /// attach_tool[0] is reached via RRT from last point 
         int32_t    num_attach_tool_states;
 
-        std::vector< bot_core::robot_state_t > attach_tool;
+        std::vector< robot_msgs::robot_state_t > attach_tool;
 
         int32_t    num_attach_tool_plan_states;
 
-        std::vector< bot_core::robot_state_t > attach_tool_plan;
+        std::vector< robot_msgs::robot_state_t > attach_tool_plan;
 
         /// remove_tool[0] is reached via RRT from dispense 
         int32_t    num_remove_tool_states;
 
-        std::vector< bot_core::robot_state_t > remove_tool;
+        std::vector< robot_msgs::robot_state_t > remove_tool;
 
         int32_t    num_remove_tool_plan_states;
 
-        std::vector< bot_core::robot_state_t > remove_tool_plan;
+        std::vector< robot_msgs::robot_state_t > remove_tool_plan;
 
         /// information for the controller. Flexibility to do mixed pos/impedance control
         int8_t     arm_control_type;
@@ -566,18 +566,18 @@ uint64_t stuffgetter_plan_t::_computeHash(const __lcm_hash_ptr *p)
     const __lcm_hash_ptr cp = { p, stuffgetter_plan_t::getHash };
 
     uint64_t hash = 0xe59fc54876338524LL +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp) +
-         bot_core::robot_state_t::_computeHash(&cp);
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp) +
+         robot_msgs::robot_state_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);
 }
