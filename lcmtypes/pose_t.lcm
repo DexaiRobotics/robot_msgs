@@ -1,0 +1,7 @@
+package robot_msgs;
+
+struct pose_t
+{
+   drake.lcmt_point translation;
+   drake.lcmt_quaternion rotation;
+}

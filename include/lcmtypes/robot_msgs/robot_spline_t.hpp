@@ -13,7 +13,7 @@
 #include <vector>
 #include "robot_msgs/lcmt_piecewise_polynomial.hpp"
 #include "robot_msgs/robot_joint.hpp"
-#include "bot_core/position_3d_t.hpp"
+#include "robot_msgs/pose_t.hpp"
 
 namespace robot_msgs
 {
@@ -33,7 +33,7 @@ class robot_spline_t
 
         std::vector< robot_msgs::robot_joint > robot_joints;
 
-        bot_core::position_3d_t cartesian_goal;
+        robot_msgs::pose_t cartesian_goal;
 
         int16_t    exec_opt;
 
@@ -235,7 +235,7 @@ uint64_t robot_spline_t::_computeHash(const __lcm_hash_ptr *p)
     uint64_t hash = 0xed0a1268ba000244LL +
          robot_msgs::lcmt_piecewise_polynomial::_computeHash(&cp) +
          robot_msgs::robot_joint::_computeHash(&cp) +
-         bot_core::position_3d_t::_computeHash(&cp);
+         robot_msgs::pose_t::_computeHash(&cp);
 
     return (hash<<1) + ((hash>>63)&1);
 }
