@@ -18,6 +18,5 @@ from .robot_spline_t import robot_spline_t
 from .robot_state_t import robot_state_t
 from .robot_status_t import robot_status_t
 from .string_t import string_t
-from .stuffgetter_plan_t import stuffgetter_plan_t
 from .trigger_t import trigger_t
 from .twist_t import twist_t
