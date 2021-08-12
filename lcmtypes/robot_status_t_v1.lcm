@@ -1,6 +1,6 @@
 package robot_msgs;
 
-struct robot_status_t {
+struct robot_status_t_v1 {
   // The timestamp in microseconds.
   int64_t utime;
 
