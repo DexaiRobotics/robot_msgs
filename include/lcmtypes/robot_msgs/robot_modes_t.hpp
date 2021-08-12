@@ -16,41 +16,13 @@ namespace robot_msgs
 class robot_modes_t
 {
     public:
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kOther = 0;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kIdle = 1;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kMove = 2;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kGuiding = 3;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kReflex = 4;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kUserStopped = 5;
-        // If you're using C++11 and are getting compiler errors saying
-        // things like ‘constexpr’ needed for in-class initialization of
-        // static data member then re-run lcm-gen with '--cpp-std=c++11'
-        // to generate code that is compliant with C++11
-        static const int16_t  kAutomaticErrorRecovery = 6;
+        static constexpr int16_t  kOther = 0;
+        static constexpr int16_t  kIdle = 1;
+        static constexpr int16_t  kMove = 2;
+        static constexpr int16_t  kGuiding = 3;
+        static constexpr int16_t  kReflex = 4;
+        static constexpr int16_t  kUserStopped = 5;
+        static constexpr int16_t  kAutomaticErrorRecovery = 6;
 
     public:
         /**
