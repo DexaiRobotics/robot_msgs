@@ -1,0 +1,4 @@
+string tool_id
+---
+bool evaluate
+string message
