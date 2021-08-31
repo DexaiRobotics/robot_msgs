@@ -82,6 +82,8 @@ add_service_files(
   GetImage.srv
   LoadFile.srv
   ProcessImageToFloat.srv
+  ReportToolAttachSuccess.srv
+  ToolAttachWithRL.srv
 )
 
 ## Generate actions in the 'action' folder
