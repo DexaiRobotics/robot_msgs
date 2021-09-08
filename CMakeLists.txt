@@ -132,15 +132,7 @@ generate_messages(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-  INCLUDE_DIRS include
-  INCLUDE_DIRS include/lcmtypes
-# CATKIN_DEPENDS message_runtime
-#  LIBRARIES perception_msgs
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
-)
-
+catkin_package(INCLUDE_DIRS include/lcmtypes)
 
 ###########
 ## Build ##
