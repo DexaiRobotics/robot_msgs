@@ -1,6 +1,7 @@
 string log_folder_path
 string log_filename
 string exclude_pattern
+float32 max_log_duration_sec
 
 --- 
 
