@@ -1,0 +1,6 @@
+package robot_msgs;
+
+struct pose_timestamped_t {
+  int64_t utime;
+  pose_t pose;
+}
