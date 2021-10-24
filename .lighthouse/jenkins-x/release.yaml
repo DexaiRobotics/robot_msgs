@@ -1,0 +1,48 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  creationTimestamp: null
+  name: release
+spec:
+  pipelineSpec:
+    tasks:
+    - name: rmsgs-release
+      resources: {}
+      taskSpec:
+        metadata: {}
+        stepTemplate:
+          image: uses:jenkins-x/jx3-pipeline-catalog/tasks/python/release.yaml@versionStream
+          name: ""
+          resources:
+            requests:
+              cpu: 400m
+              memory: 512Mi
+          workingDir: /workspace/source
+        steps:
+        - image: uses:jenkins-x/jx3-pipeline-catalog/tasks/git-clone/git-clone.yaml@versionStream
+          name: ""
+          resources: {}
+        - name: next-version
+          resources: {}
+        - image: ghcr.io/jenkins-x/jx-boot:3.2.197
+          name: jx-variables
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            jx gitops variables --commit=false
+        - script: |
+            #!/usr/bin/env sh
+            commitMessage=$(git --no-pager log --pretty="%s" -n1)
+            echo $commitMessage
+            jx-updatebot pr --pull-request-title "${commitMessage} - autobump robot_msgs submodule"
+          image: ghcr.io/jenkins-x/jx-updatebot:0.0.75
+          name: promote-release
+          resources: {}
+          envFrom:
+          - secretRef:
+              name: jx-boot
+              optional: true
+  podTemplate: {}
+  serviceAccountName: tekton-bot
+  timeout: 10m0s
+status: {}
