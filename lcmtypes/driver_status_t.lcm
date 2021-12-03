@@ -8,20 +8,18 @@ struct driver_status_t {
 
   // true if the driver is running and a connection 
   // to the arm has been sucecssfully established
-  bool driver_running;
+  boolean driver_running;
 
   // optional messagee describing error if driver is 
   // not running
   string err_msg;
 
-  // enum describing robot's current mode:
-  // kOther, kIdle, kMove, kGuiding, kReflex,
-  // kUserStopped, kAutomaticErrorRecovery
-  int16_t robot_mode;
+  // string describing robot's current mode
+  string robot_mode;
 
   // true if robot arm is currently executing a plan, 
   // false if idle
-  bool has_plan;
+  boolean has_plan;
 
   // utime of the current plan.
   // set to -1 if robot does not have a plan
@@ -31,21 +29,21 @@ struct driver_status_t {
   int64_t plan_start_utime;
 
   // True if robot is paused by one or more sources
-  bool paused;
+  boolean paused;
 
   // comma-separated list of pause sources, empty string
   // if robot arm is not paused
   string pause_sources;
 
   // true if brakes are locked
-  bool brakes_locked;
+  boolean brakes_locked;
 
   // true if robot arm is user stopped
-  bool user_stopped;
+  boolean user_stopped;
 
   // true if compliant push is currently being attempted
-  bool compliant_push_active;
+  boolean compliant_push_active;
 
   // true if torque is enabled on robot arm joints
-  bool torque_enabled;
+  boolean torque_enabled;
 }

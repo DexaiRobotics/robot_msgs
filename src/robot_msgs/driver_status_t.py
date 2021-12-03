@@ -9,29 +9,27 @@ except ImportError:
     from io import BytesIO
 import struct
 
-import robot_msgs.bool
-
 class driver_status_t(object):
     __slots__ = ["utime", "driver_running", "err_msg", "robot_mode", "has_plan", "current_plan_utime", "plan_start_utime", "paused", "pause_sources", "brakes_locked", "user_stopped", "compliant_push_active", "torque_enabled"]
 
-    __typenames__ = ["int64_t", "robot_msgs.bool", "string", "int16_t", "robot_msgs.bool", "int64_t", "int64_t", "robot_msgs.bool", "string", "robot_msgs.bool", "robot_msgs.bool", "robot_msgs.bool", "robot_msgs.bool"]
+    __typenames__ = ["int64_t", "boolean", "string", "string", "boolean", "int64_t", "int64_t", "boolean", "string", "boolean", "boolean", "boolean", "boolean"]
 
     __dimensions__ = [None, None, None, None, None, None, None, None, None, None, None, None, None]
 
     def __init__(self):
         self.utime = 0
-        self.driver_running = robot_msgs.bool()
+        self.driver_running = False
         self.err_msg = ""
-        self.robot_mode = 0
-        self.has_plan = robot_msgs.bool()
+        self.robot_mode = ""
+        self.has_plan = False
         self.current_plan_utime = 0
         self.plan_start_utime = 0
-        self.paused = robot_msgs.bool()
+        self.paused = False
         self.pause_sources = ""
-        self.brakes_locked = robot_msgs.bool()
-        self.user_stopped = robot_msgs.bool()
-        self.compliant_push_active = robot_msgs.bool()
-        self.torque_enabled = robot_msgs.bool()
+        self.brakes_locked = False
+        self.user_stopped = False
+        self.compliant_push_active = False
+        self.torque_enabled = False
 
     def encode(self):
         buf = BytesIO()
@@ -40,31 +38,21 @@ class driver_status_t(object):
         return buf.getvalue()
 
     def _encode_one(self, buf):
-        buf.write(struct.pack(">q", self.utime))
-        assert self.driver_running._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.driver_running._encode_one(buf)
+        buf.write(struct.pack(">qb", self.utime, self.driver_running))
         __err_msg_encoded = self.err_msg.encode('utf-8')
         buf.write(struct.pack('>I', len(__err_msg_encoded)+1))
         buf.write(__err_msg_encoded)
         buf.write(b"\0")
-        buf.write(struct.pack(">h", self.robot_mode))
-        assert self.has_plan._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.has_plan._encode_one(buf)
-        buf.write(struct.pack(">qq", self.current_plan_utime, self.plan_start_utime))
-        assert self.paused._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.paused._encode_one(buf)
+        __robot_mode_encoded = self.robot_mode.encode('utf-8')
+        buf.write(struct.pack('>I', len(__robot_mode_encoded)+1))
+        buf.write(__robot_mode_encoded)
+        buf.write(b"\0")
+        buf.write(struct.pack(">bqqb", self.has_plan, self.current_plan_utime, self.plan_start_utime, self.paused))
         __pause_sources_encoded = self.pause_sources.encode('utf-8')
         buf.write(struct.pack('>I', len(__pause_sources_encoded)+1))
         buf.write(__pause_sources_encoded)
         buf.write(b"\0")
-        assert self.brakes_locked._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.brakes_locked._encode_one(buf)
-        assert self.user_stopped._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.user_stopped._encode_one(buf)
-        assert self.compliant_push_active._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.compliant_push_active._encode_one(buf)
-        assert self.torque_enabled._get_packed_fingerprint() == robot_msgs.bool._get_packed_fingerprint()
-        self.torque_enabled._encode_one(buf)
+        buf.write(struct.pack(">bbbb", self.brakes_locked, self.user_stopped, self.compliant_push_active, self.torque_enabled))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -79,26 +67,26 @@ class driver_status_t(object):
     def _decode_one(buf):
         self = driver_status_t()
         self.utime = struct.unpack(">q", buf.read(8))[0]
-        self.driver_running = robot_msgs.bool._decode_one(buf)
+        self.driver_running = bool(struct.unpack('b', buf.read(1))[0])
         __err_msg_len = struct.unpack('>I', buf.read(4))[0]
         self.err_msg = buf.read(__err_msg_len)[:-1].decode('utf-8', 'replace')
-        self.robot_mode = struct.unpack(">h", buf.read(2))[0]
-        self.has_plan = robot_msgs.bool._decode_one(buf)
+        __robot_mode_len = struct.unpack('>I', buf.read(4))[0]
+        self.robot_mode = buf.read(__robot_mode_len)[:-1].decode('utf-8', 'replace')
+        self.has_plan = bool(struct.unpack('b', buf.read(1))[0])
         self.current_plan_utime, self.plan_start_utime = struct.unpack(">qq", buf.read(16))
-        self.paused = robot_msgs.bool._decode_one(buf)
+        self.paused = bool(struct.unpack('b', buf.read(1))[0])
         __pause_sources_len = struct.unpack('>I', buf.read(4))[0]
         self.pause_sources = buf.read(__pause_sources_len)[:-1].decode('utf-8', 'replace')
-        self.brakes_locked = robot_msgs.bool._decode_one(buf)
-        self.user_stopped = robot_msgs.bool._decode_one(buf)
-        self.compliant_push_active = robot_msgs.bool._decode_one(buf)
-        self.torque_enabled = robot_msgs.bool._decode_one(buf)
+        self.brakes_locked = bool(struct.unpack('b', buf.read(1))[0])
+        self.user_stopped = bool(struct.unpack('b', buf.read(1))[0])
+        self.compliant_push_active = bool(struct.unpack('b', buf.read(1))[0])
+        self.torque_enabled = bool(struct.unpack('b', buf.read(1))[0])
         return self
     _decode_one = staticmethod(_decode_one)
 
     def _get_hash_recursive(parents):
         if driver_status_t in parents: return 0
-        newparents = parents + [driver_status_t]
-        tmphash = (0x1b4812cb45c45e9e+ robot_msgs.bool._get_hash_recursive(newparents)+ robot_msgs.bool._get_hash_recursive(newparents)+ robot_msgs.bool._get_hash_recursive(newparents)+ robot_msgs.bool._get_hash_recursive(newparents)+ robot_msgs.bool._get_hash_recursive(newparents)+ robot_msgs.bool._get_hash_recursive(newparents)+ robot_msgs.bool._get_hash_recursive(newparents)) & 0xffffffffffffffff
+        tmphash = (0x189a81f9a25e2e21) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

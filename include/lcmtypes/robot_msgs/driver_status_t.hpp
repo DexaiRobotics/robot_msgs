@@ -10,13 +10,6 @@
 #include <lcm/lcm_coretypes.h>
 
 #include <string>
-#include "robot_msgs/bool.hpp"
-#include "robot_msgs/bool.hpp"
-#include "robot_msgs/bool.hpp"
-#include "robot_msgs/bool.hpp"
-#include "robot_msgs/bool.hpp"
-#include "robot_msgs/bool.hpp"
-#include "robot_msgs/bool.hpp"
 
 namespace robot_msgs
 {
@@ -32,7 +25,7 @@ class driver_status_t
          * true if the driver is running and a connection 
          * to the arm has been sucecssfully established
          */
-        robot_msgs::bool driver_running;
+        int8_t     driver_running;
 
         /**
          * optional messagee describing error if driver is 
@@ -40,18 +33,14 @@ class driver_status_t
          */
         std::string err_msg;
 
-        /**
-         * enum describing robot's current mode:
-         * kOther, kIdle, kMove, kGuiding, kReflex,
-         * kUserStopped, kAutomaticErrorRecovery
-         */
-        int16_t    robot_mode;
+        /// string describing robot's current mode
+        std::string robot_mode;
 
         /**
          * true if robot arm is currently executing a plan, 
          * false if idle
          */
-        robot_msgs::bool has_plan;
+        int8_t     has_plan;
 
         /**
          * utime of the current plan.
@@ -63,7 +52,7 @@ class driver_status_t
         int64_t    plan_start_utime;
 
         /// True if robot is paused by one or more sources
-        robot_msgs::bool paused;
+        int8_t     paused;
 
         /**
          * comma-separated list of pause sources, empty string
@@ -72,16 +61,16 @@ class driver_status_t
         std::string pause_sources;
 
         /// true if brakes are locked
-        robot_msgs::bool brakes_locked;
+        int8_t     brakes_locked;
 
         /// true if robot arm is user stopped
-        robot_msgs::bool user_stopped;
+        int8_t     user_stopped;
 
         /// true if compliant push is currently being attempted
-        robot_msgs::bool compliant_push_active;
+        int8_t     compliant_push_active;
 
         /// true if torque is enabled on robot arm joints
-        robot_msgs::bool torque_enabled;
+        int8_t     torque_enabled;
 
     public:
         /**
@@ -182,7 +171,7 @@ int driver_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->driver_running._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->driver_running, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     char* err_msg_cstr = const_cast<char*>(this->err_msg.c_str());
@@ -190,10 +179,12 @@ int driver_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
         buf, offset + pos, maxlen - pos, &err_msg_cstr, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = __int16_t_encode_array(buf, offset + pos, maxlen - pos, &this->robot_mode, 1);
+    char* robot_mode_cstr = const_cast<char*>(this->robot_mode.c_str());
+    tlen = __string_encode_array(
+        buf, offset + pos, maxlen - pos, &robot_mode_cstr, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->has_plan._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->has_plan, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->current_plan_utime, 1);
@@ -202,7 +193,7 @@ int driver_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->plan_start_utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->paused._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     char* pause_sources_cstr = const_cast<char*>(this->pause_sources.c_str());
@@ -210,16 +201,16 @@ int driver_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
         buf, offset + pos, maxlen - pos, &pause_sources_cstr, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->brakes_locked._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->brakes_locked, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->user_stopped._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->user_stopped, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->compliant_push_active._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->compliant_push_active, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->torque_enabled._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->torque_enabled, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -232,7 +223,7 @@ int driver_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->driver_running._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->driver_running, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     int32_t __err_msg_len__;
@@ -244,10 +235,16 @@ int driver_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
         static_cast<const char*>(buf) + offset + pos, __err_msg_len__ - 1);
     pos += __err_msg_len__;
 
-    tlen = __int16_t_decode_array(buf, offset + pos, maxlen - pos, &this->robot_mode, 1);
+    int32_t __robot_mode_len__;
+    tlen = __int32_t_decode_array(
+        buf, offset + pos, maxlen - pos, &__robot_mode_len__, 1);
     if(tlen < 0) return tlen; else pos += tlen;
+    if(__robot_mode_len__ > maxlen - pos) return -1;
+    this->robot_mode.assign(
+        static_cast<const char*>(buf) + offset + pos, __robot_mode_len__ - 1);
+    pos += __robot_mode_len__;
 
-    tlen = this->has_plan._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->has_plan, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->current_plan_utime, 1);
@@ -256,7 +253,7 @@ int driver_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->plan_start_utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->paused._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     int32_t __pause_sources_len__;
@@ -268,16 +265,16 @@ int driver_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
         static_cast<const char*>(buf) + offset + pos, __pause_sources_len__ - 1);
     pos += __pause_sources_len__;
 
-    tlen = this->brakes_locked._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->brakes_locked, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->user_stopped._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->user_stopped, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->compliant_push_active._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->compliant_push_active, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->torque_enabled._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->torque_enabled, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -287,38 +284,24 @@ int driver_status_t::_getEncodedSizeNoHash() const
 {
     int enc_size = 0;
     enc_size += __int64_t_encoded_array_size(NULL, 1);
-    enc_size += this->driver_running._getEncodedSizeNoHash();
+    enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += this->err_msg.size() + 4 + 1;
-    enc_size += __int16_t_encoded_array_size(NULL, 1);
-    enc_size += this->has_plan._getEncodedSizeNoHash();
+    enc_size += this->robot_mode.size() + 4 + 1;
+    enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
-    enc_size += this->paused._getEncodedSizeNoHash();
+    enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += this->pause_sources.size() + 4 + 1;
-    enc_size += this->brakes_locked._getEncodedSizeNoHash();
-    enc_size += this->user_stopped._getEncodedSizeNoHash();
-    enc_size += this->compliant_push_active._getEncodedSizeNoHash();
-    enc_size += this->torque_enabled._getEncodedSizeNoHash();
+    enc_size += __boolean_encoded_array_size(NULL, 1);
+    enc_size += __boolean_encoded_array_size(NULL, 1);
+    enc_size += __boolean_encoded_array_size(NULL, 1);
+    enc_size += __boolean_encoded_array_size(NULL, 1);
     return enc_size;
 }
 
-uint64_t driver_status_t::_computeHash(const __lcm_hash_ptr *p)
+uint64_t driver_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    const __lcm_hash_ptr *fp;
-    for(fp = p; fp != NULL; fp = fp->parent)
-        if(fp->v == driver_status_t::getHash)
-            return 0;
-    const __lcm_hash_ptr cp = { p, driver_status_t::getHash };
-
-    uint64_t hash = 0x1b4812cb45c45e9eLL +
-         robot_msgs::bool::_computeHash(&cp) +
-         robot_msgs::bool::_computeHash(&cp) +
-         robot_msgs::bool::_computeHash(&cp) +
-         robot_msgs::bool::_computeHash(&cp) +
-         robot_msgs::bool::_computeHash(&cp) +
-         robot_msgs::bool::_computeHash(&cp) +
-         robot_msgs::bool::_computeHash(&cp);
-
+    uint64_t hash = 0x189a81f9a25e2e21LL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
