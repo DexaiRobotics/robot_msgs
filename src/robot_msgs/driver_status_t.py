@@ -10,11 +10,11 @@ except ImportError:
 import struct
 
 class driver_status_t(object):
-    __slots__ = ["utime", "driver_running", "err_msg", "robot_mode", "has_plan", "current_plan_utime", "plan_start_utime", "paused", "pause_sources", "brakes_locked", "user_stopped", "compliant_push_active", "torque_enabled"]
+    __slots__ = ["utime", "driver_running", "err_msg", "robot_mode", "has_plan", "current_plan_utime", "plan_start_utime", "last_plan_utime", "last_plan_successful", "last_plan_msg", "paused", "pause_sources", "brakes_locked", "user_stopped", "compliant_push_active", "torque_enabled"]
 
-    __typenames__ = ["int64_t", "boolean", "string", "string", "boolean", "int64_t", "int64_t", "boolean", "string", "boolean", "boolean", "boolean", "boolean"]
+    __typenames__ = ["int64_t", "boolean", "string", "string", "boolean", "int64_t", "int64_t", "int64_t", "boolean", "string", "boolean", "string", "boolean", "boolean", "boolean", "boolean"]
 
-    __dimensions__ = [None, None, None, None, None, None, None, None, None, None, None, None, None]
+    __dimensions__ = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
 
     def __init__(self):
         self.utime = 0
@@ -24,6 +24,9 @@ class driver_status_t(object):
         self.has_plan = False
         self.current_plan_utime = 0
         self.plan_start_utime = 0
+        self.last_plan_utime = 0
+        self.last_plan_successful = False
+        self.last_plan_msg = ""
         self.paused = False
         self.pause_sources = ""
         self.brakes_locked = False
@@ -47,7 +50,12 @@ class driver_status_t(object):
         buf.write(struct.pack('>I', len(__robot_mode_encoded)+1))
         buf.write(__robot_mode_encoded)
         buf.write(b"\0")
-        buf.write(struct.pack(">bqqb", self.has_plan, self.current_plan_utime, self.plan_start_utime, self.paused))
+        buf.write(struct.pack(">bqqqb", self.has_plan, self.current_plan_utime, self.plan_start_utime, self.last_plan_utime, self.last_plan_successful))
+        __last_plan_msg_encoded = self.last_plan_msg.encode('utf-8')
+        buf.write(struct.pack('>I', len(__last_plan_msg_encoded)+1))
+        buf.write(__last_plan_msg_encoded)
+        buf.write(b"\0")
+        buf.write(struct.pack(">b", self.paused))
         __pause_sources_encoded = self.pause_sources.encode('utf-8')
         buf.write(struct.pack('>I', len(__pause_sources_encoded)+1))
         buf.write(__pause_sources_encoded)
@@ -73,7 +81,10 @@ class driver_status_t(object):
         __robot_mode_len = struct.unpack('>I', buf.read(4))[0]
         self.robot_mode = buf.read(__robot_mode_len)[:-1].decode('utf-8', 'replace')
         self.has_plan = bool(struct.unpack('b', buf.read(1))[0])
-        self.current_plan_utime, self.plan_start_utime = struct.unpack(">qq", buf.read(16))
+        self.current_plan_utime, self.plan_start_utime, self.last_plan_utime = struct.unpack(">qqq", buf.read(24))
+        self.last_plan_successful = bool(struct.unpack('b', buf.read(1))[0])
+        __last_plan_msg_len = struct.unpack('>I', buf.read(4))[0]
+        self.last_plan_msg = buf.read(__last_plan_msg_len)[:-1].decode('utf-8', 'replace')
         self.paused = bool(struct.unpack('b', buf.read(1))[0])
         __pause_sources_len = struct.unpack('>I', buf.read(4))[0]
         self.pause_sources = buf.read(__pause_sources_len)[:-1].decode('utf-8', 'replace')
@@ -86,7 +97,7 @@ class driver_status_t(object):
 
     def _get_hash_recursive(parents):
         if driver_status_t in parents: return 0
-        tmphash = (0x189a81f9a25e2e21) & 0xffffffffffffffff
+        tmphash = (0x886b45a1638045a4) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

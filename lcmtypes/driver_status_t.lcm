@@ -28,6 +28,15 @@ struct driver_status_t {
   // start utime of the current plan
   int64_t plan_start_utime;
 
+  // utime of the last completed plan.
+  int64_t last_plan_utime;
+
+  // true if last plan was completed successfully
+  boolean last_plan_successful;
+
+  // optional messagee describing error if last plan failed
+  string last_plan_msg;
+
   // True if robot is paused by one or more sources
   boolean paused;
 

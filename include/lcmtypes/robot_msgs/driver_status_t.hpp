@@ -51,6 +51,15 @@ class driver_status_t
         /// start utime of the current plan
         int64_t    plan_start_utime;
 
+        /// utime of the last completed plan.
+        int64_t    last_plan_utime;
+
+        /// true if last plan was completed successfully
+        int8_t     last_plan_successful;
+
+        /// optional messagee describing error if last plan failed
+        std::string last_plan_msg;
+
         /// True if robot is paused by one or more sources
         int8_t     paused;
 
@@ -193,6 +202,17 @@ int driver_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->plan_start_utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __int64_t_encode_array(buf, offset + pos, maxlen - pos, &this->last_plan_utime, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->last_plan_successful, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    char* last_plan_msg_cstr = const_cast<char*>(this->last_plan_msg.c_str());
+    tlen = __string_encode_array(
+        buf, offset + pos, maxlen - pos, &last_plan_msg_cstr, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
     tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -253,6 +273,21 @@ int driver_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->plan_start_utime, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
+    tlen = __int64_t_decode_array(buf, offset + pos, maxlen - pos, &this->last_plan_utime, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->last_plan_successful, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+
+    int32_t __last_plan_msg_len__;
+    tlen = __int32_t_decode_array(
+        buf, offset + pos, maxlen - pos, &__last_plan_msg_len__, 1);
+    if(tlen < 0) return tlen; else pos += tlen;
+    if(__last_plan_msg_len__ > maxlen - pos) return -1;
+    this->last_plan_msg.assign(
+        static_cast<const char*>(buf) + offset + pos, __last_plan_msg_len__ - 1);
+    pos += __last_plan_msg_len__;
+
     tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
@@ -290,6 +325,9 @@ int driver_status_t::_getEncodedSizeNoHash() const
     enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __int64_t_encoded_array_size(NULL, 1);
+    enc_size += __int64_t_encoded_array_size(NULL, 1);
+    enc_size += __boolean_encoded_array_size(NULL, 1);
+    enc_size += this->last_plan_msg.size() + 4 + 1;
     enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += this->pause_sources.size() + 4 + 1;
     enc_size += __boolean_encoded_array_size(NULL, 1);
@@ -301,7 +339,7 @@ int driver_status_t::_getEncodedSizeNoHash() const
 
 uint64_t driver_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0x189a81f9a25e2e21LL;
+    uint64_t hash = 0x886b45a1638045a4LL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
