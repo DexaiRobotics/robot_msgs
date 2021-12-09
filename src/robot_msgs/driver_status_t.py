@@ -10,11 +10,11 @@ except ImportError:
 import struct
 
 class driver_status_t(object):
-    __slots__ = ["utime", "driver_running", "err_msg", "robot_mode", "has_plan", "current_plan_utime", "plan_start_utime", "last_plan_utime", "last_plan_successful", "last_plan_msg", "paused", "pause_sources", "brakes_locked", "user_stopped", "compliant_push_active", "torque_enabled"]
+    __slots__ = ["utime", "driver_running", "err_msg", "robot_mode", "has_plan", "current_plan_utime", "plan_start_utime", "last_plan_utime", "last_plan_successful", "last_plan_msg", "paused", "num_pause_sources", "pause_sources", "brakes_locked", "user_stopped", "compliant_push_active", "torque_enabled"]
 
-    __typenames__ = ["int64_t", "boolean", "string", "string", "boolean", "int64_t", "int64_t", "int64_t", "boolean", "string", "boolean", "string", "boolean", "boolean", "boolean", "boolean"]
+    __typenames__ = ["int64_t", "boolean", "string", "string", "boolean", "int64_t", "int64_t", "int64_t", "boolean", "string", "boolean", "int8_t", "string", "boolean", "boolean", "boolean", "boolean"]
 
-    __dimensions__ = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+    __dimensions__ = [None, None, None, None, None, None, None, None, None, None, None, None, ["num_pause_sources"], None, None, None, None]
 
     def __init__(self):
         self.utime = 0
@@ -28,7 +28,8 @@ class driver_status_t(object):
         self.last_plan_successful = False
         self.last_plan_msg = ""
         self.paused = False
-        self.pause_sources = ""
+        self.num_pause_sources = 0
+        self.pause_sources = []
         self.brakes_locked = False
         self.user_stopped = False
         self.compliant_push_active = False
@@ -55,11 +56,12 @@ class driver_status_t(object):
         buf.write(struct.pack('>I', len(__last_plan_msg_encoded)+1))
         buf.write(__last_plan_msg_encoded)
         buf.write(b"\0")
-        buf.write(struct.pack(">b", self.paused))
-        __pause_sources_encoded = self.pause_sources.encode('utf-8')
-        buf.write(struct.pack('>I', len(__pause_sources_encoded)+1))
-        buf.write(__pause_sources_encoded)
-        buf.write(b"\0")
+        buf.write(struct.pack(">bb", self.paused, self.num_pause_sources))
+        for i0 in range(self.num_pause_sources):
+            __pause_sources_encoded = self.pause_sources[i0].encode('utf-8')
+            buf.write(struct.pack('>I', len(__pause_sources_encoded)+1))
+            buf.write(__pause_sources_encoded)
+            buf.write(b"\0")
         buf.write(struct.pack(">bbbb", self.brakes_locked, self.user_stopped, self.compliant_push_active, self.torque_enabled))
 
     def decode(data):
@@ -86,8 +88,11 @@ class driver_status_t(object):
         __last_plan_msg_len = struct.unpack('>I', buf.read(4))[0]
         self.last_plan_msg = buf.read(__last_plan_msg_len)[:-1].decode('utf-8', 'replace')
         self.paused = bool(struct.unpack('b', buf.read(1))[0])
-        __pause_sources_len = struct.unpack('>I', buf.read(4))[0]
-        self.pause_sources = buf.read(__pause_sources_len)[:-1].decode('utf-8', 'replace')
+        self.num_pause_sources = struct.unpack(">b", buf.read(1))[0]
+        self.pause_sources = []
+        for i0 in range(self.num_pause_sources):
+            __pause_sources_len = struct.unpack('>I', buf.read(4))[0]
+            self.pause_sources.append(buf.read(__pause_sources_len)[:-1].decode('utf-8', 'replace'))
         self.brakes_locked = bool(struct.unpack('b', buf.read(1))[0])
         self.user_stopped = bool(struct.unpack('b', buf.read(1))[0])
         self.compliant_push_active = bool(struct.unpack('b', buf.read(1))[0])
@@ -97,7 +102,7 @@ class driver_status_t(object):
 
     def _get_hash_recursive(parents):
         if driver_status_t in parents: return 0
-        tmphash = (0x886b45a1638045a4) & 0xffffffffffffffff
+        tmphash = (0xb1717036f4c2f0c8) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

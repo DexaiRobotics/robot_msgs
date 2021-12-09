@@ -40,9 +40,11 @@ struct driver_status_t {
   // True if robot is paused by one or more sources
   boolean paused;
 
-  // comma-separated list of pause sources, empty string
-  // if robot arm is not paused
-  string pause_sources;
+  // number of pause sources
+  int8_t num_pause_sources;
+
+  // list of pause sources, empty if not paused
+  string pause_sources[num_pause_sources];
 
   // true if brakes are locked
   boolean brakes_locked;

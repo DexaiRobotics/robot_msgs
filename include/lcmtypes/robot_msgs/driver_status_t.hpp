@@ -10,6 +10,7 @@
 #include <lcm/lcm_coretypes.h>
 
 #include <string>
+#include <vector>
 
 namespace robot_msgs
 {
@@ -63,11 +64,11 @@ class driver_status_t
         /// True if robot is paused by one or more sources
         int8_t     paused;
 
-        /**
-         * comma-separated list of pause sources, empty string
-         * if robot arm is not paused
-         */
-        std::string pause_sources;
+        /// number of pause sources
+        int8_t     num_pause_sources;
+
+        /// list of pause sources, empty if not paused
+        std::vector< std::string > pause_sources;
 
         /// true if brakes are locked
         int8_t     brakes_locked;
@@ -216,10 +217,15 @@ int driver_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    char* pause_sources_cstr = const_cast<char*>(this->pause_sources.c_str());
-    tlen = __string_encode_array(
-        buf, offset + pos, maxlen - pos, &pause_sources_cstr, 1);
+    tlen = __int8_t_encode_array(buf, offset + pos, maxlen - pos, &this->num_pause_sources, 1);
     if(tlen < 0) return tlen; else pos += tlen;
+
+    for (int a0 = 0; a0 < this->num_pause_sources; a0++) {
+        char* __cstr = const_cast<char*>(this->pause_sources[a0].c_str());
+        tlen = __string_encode_array(
+            buf, offset + pos, maxlen - pos, &__cstr, 1);
+        if(tlen < 0) return tlen; else pos += tlen;
+    }
 
     tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->brakes_locked, 1);
     if(tlen < 0) return tlen; else pos += tlen;
@@ -291,14 +297,23 @@ int driver_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->paused, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    int32_t __pause_sources_len__;
-    tlen = __int32_t_decode_array(
-        buf, offset + pos, maxlen - pos, &__pause_sources_len__, 1);
+    tlen = __int8_t_decode_array(buf, offset + pos, maxlen - pos, &this->num_pause_sources, 1);
     if(tlen < 0) return tlen; else pos += tlen;
-    if(__pause_sources_len__ > maxlen - pos) return -1;
-    this->pause_sources.assign(
-        static_cast<const char*>(buf) + offset + pos, __pause_sources_len__ - 1);
-    pos += __pause_sources_len__;
+
+    try {
+        this->pause_sources.resize(this->num_pause_sources);
+    } catch (...) {
+        return -1;
+    }
+    for (int a0 = 0; a0 < this->num_pause_sources; a0++) {
+        int32_t __elem_len;
+        tlen = __int32_t_decode_array(
+            buf, offset + pos, maxlen - pos, &__elem_len, 1);
+        if(tlen < 0) return tlen; else pos += tlen;
+        if(__elem_len > maxlen - pos) return -1;
+        this->pause_sources[a0].assign(static_cast<const char*>(buf) + offset + pos, __elem_len -  1);
+        pos += __elem_len;
+    }
 
     tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->brakes_locked, 1);
     if(tlen < 0) return tlen; else pos += tlen;
@@ -329,7 +344,10 @@ int driver_status_t::_getEncodedSizeNoHash() const
     enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += this->last_plan_msg.size() + 4 + 1;
     enc_size += __boolean_encoded_array_size(NULL, 1);
-    enc_size += this->pause_sources.size() + 4 + 1;
+    enc_size += __int8_t_encoded_array_size(NULL, 1);
+    for (int a0 = 0; a0 < this->num_pause_sources; a0++) {
+        enc_size += this->pause_sources[a0].size() + 4 + 1;
+    }
     enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += __boolean_encoded_array_size(NULL, 1);
     enc_size += __boolean_encoded_array_size(NULL, 1);
@@ -339,7 +357,7 @@ int driver_status_t::_getEncodedSizeNoHash() const
 
 uint64_t driver_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    uint64_t hash = 0x886b45a1638045a4LL;
+    uint64_t hash = 0xb1717036f4c2f0c8LL;
     return (hash<<1) + ((hash>>63)&1);
 }
 
