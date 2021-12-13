@@ -1,0 +1,60 @@
+package robot_msgs;
+
+// message with metadata about robot driver
+
+struct driver_status_t {
+  // the timestamp in microseconds
+  int64_t utime;
+
+  // true if the driver is running and a connection 
+  // to the arm has been sucecssfully established
+  boolean driver_running;
+
+  // optional messagee describing error if driver is 
+  // not running
+  string err_msg;
+
+  // string describing robot's current mode
+  string robot_mode;
+
+  // true if robot arm is currently executing a plan, 
+  // false if idle
+  boolean has_plan;
+
+  // utime of the current plan.
+  // set to -1 if robot does not have a plan
+  int64_t current_plan_utime;
+
+  // start utime of the current plan
+  int64_t plan_start_utime;
+
+  // utime of the last completed plan.
+  int64_t last_plan_utime;
+
+  // true if last plan was completed successfully
+  boolean last_plan_successful;
+
+  // optional messagee describing error if last plan failed
+  string last_plan_msg;
+
+  // True if robot is paused by one or more sources
+  boolean paused;
+
+  // number of pause sources
+  int8_t num_pause_sources;
+
+  // list of pause sources, empty if not paused
+  string pause_sources[num_pause_sources];
+
+  // true if brakes are locked
+  boolean brakes_locked;
+
+  // true if robot arm is user stopped
+  boolean user_stopped;
+
+  // true if compliant push is currently being attempted
+  boolean compliant_push_active;
+
+  // true if torque is enabled on robot arm joints
+  boolean torque_enabled;
+}
