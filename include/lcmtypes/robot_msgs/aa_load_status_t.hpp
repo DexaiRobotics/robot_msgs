@@ -9,7 +9,6 @@
 
 #include <lcm/lcm_coretypes.h>
 
-#include "robot_msgs/double_t.hpp"
 
 namespace robot_msgs
 {
@@ -22,7 +21,7 @@ class aa_load_status_t
 
         int8_t     is_responsive;
 
-        robot_msgs::double_t load_value;
+        double     load_value;
 
     public:
         /**
@@ -126,7 +125,7 @@ int aa_load_status_t::_encodeNoHash(void *buf, int offset, int maxlen) const
     tlen = __boolean_encode_array(buf, offset + pos, maxlen - pos, &this->is_responsive, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->load_value._encodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __double_encode_array(buf, offset + pos, maxlen - pos, &this->load_value, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -142,7 +141,7 @@ int aa_load_status_t::_decodeNoHash(const void *buf, int offset, int maxlen)
     tlen = __boolean_decode_array(buf, offset + pos, maxlen - pos, &this->is_responsive, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
-    tlen = this->load_value._decodeNoHash(buf, offset + pos, maxlen - pos);
+    tlen = __double_decode_array(buf, offset + pos, maxlen - pos, &this->load_value, 1);
     if(tlen < 0) return tlen; else pos += tlen;
 
     return pos;
@@ -153,21 +152,13 @@ int aa_load_status_t::_getEncodedSizeNoHash() const
     int enc_size = 0;
     enc_size += __int64_t_encoded_array_size(NULL, 1);
     enc_size += __boolean_encoded_array_size(NULL, 1);
-    enc_size += this->load_value._getEncodedSizeNoHash();
+    enc_size += __double_encoded_array_size(NULL, 1);
     return enc_size;
 }
 
-uint64_t aa_load_status_t::_computeHash(const __lcm_hash_ptr *p)
+uint64_t aa_load_status_t::_computeHash(const __lcm_hash_ptr *)
 {
-    const __lcm_hash_ptr *fp;
-    for(fp = p; fp != NULL; fp = fp->parent)
-        if(fp->v == aa_load_status_t::getHash)
-            return 0;
-    const __lcm_hash_ptr cp = { p, aa_load_status_t::getHash };
-
-    uint64_t hash = 0xfaaa4334d88b75dbLL +
-         robot_msgs::double_t::_computeHash(&cp);
-
+    uint64_t hash = 0xe0a5e5eecae1b114LL;
     return (hash<<1) + ((hash>>63)&1);
 }
 

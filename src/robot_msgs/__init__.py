@@ -22,4 +22,5 @@ from .trigger_t import trigger_t
 from .twist_t import twist_t
 from .robot_status_t_v1 import robot_status_t_v1
 from .aa_load_status_t import aa_load_status_t
+from .driver_status_t import driver_status_t
 from .pose_stamped_t import pose_stamped_t
