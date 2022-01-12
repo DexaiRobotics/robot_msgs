@@ -1,0 +1,9 @@
+package robot_msgs;
+
+struct aa_load_status_t
+{
+    // microseconds since the epoch
+    int64_t  utime;
+    boolean  is_responsive;
+    double load_value;
+}
