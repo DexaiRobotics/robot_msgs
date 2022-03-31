@@ -1,5 +1,5 @@
 string tool_id
-string log_dir
+string date_time
 ---
 bool evaluate
 string message
