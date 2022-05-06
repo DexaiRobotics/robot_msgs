@@ -79,6 +79,7 @@ add_service_files(
   Calibrate.srv
   SaveContainerState.srv
   StartLCMDataCollection.srv
+  StopLCMDataCollection.srv
   GetImage.srv
   LoadFile.srv
   ProcessImageToFloat.srv
