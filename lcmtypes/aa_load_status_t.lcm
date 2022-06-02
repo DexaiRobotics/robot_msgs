@@ -6,4 +6,5 @@ struct aa_load_status_t
     int64_t  utime;
     boolean  is_responsive;
     double load_value;
+    double conditioned_load_value;
 }
