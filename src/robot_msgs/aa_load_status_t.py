@@ -10,16 +10,17 @@ except ImportError:
 import struct
 
 class aa_load_status_t(object):
-    __slots__ = ["utime", "is_responsive", "load_value"]
+    __slots__ = ["utime", "is_responsive", "load_value", "conditioned_load_value"]
 
-    __typenames__ = ["int64_t", "boolean", "double"]
+    __typenames__ = ["int64_t", "boolean", "double", "double"]
 
-    __dimensions__ = [None, None, None]
+    __dimensions__ = [None, None, None, None]
 
     def __init__(self):
         self.utime = 0
         self.is_responsive = False
         self.load_value = 0.0
+        self.conditioned_load_value = 0.0
 
     def encode(self):
         buf = BytesIO()
@@ -28,7 +29,7 @@ class aa_load_status_t(object):
         return buf.getvalue()
 
     def _encode_one(self, buf):
-        buf.write(struct.pack(">qbd", self.utime, self.is_responsive, self.load_value))
+        buf.write(struct.pack(">qbdd", self.utime, self.is_responsive, self.load_value, self.conditioned_load_value))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -44,13 +45,13 @@ class aa_load_status_t(object):
         self = aa_load_status_t()
         self.utime = struct.unpack(">q", buf.read(8))[0]
         self.is_responsive = bool(struct.unpack('b', buf.read(1))[0])
-        self.load_value = struct.unpack(">d", buf.read(8))[0]
+        self.load_value, self.conditioned_load_value = struct.unpack(">dd", buf.read(16))
         return self
     _decode_one = staticmethod(_decode_one)
 
     def _get_hash_recursive(parents):
         if aa_load_status_t in parents: return 0
-        tmphash = (0xe0a5e5eecae1b114) & 0xffffffffffffffff
+        tmphash = (0xb923b5c1554bd36b) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
