@@ -1,5 +1,6 @@
 string tool_id
 string log_dir
+geometry_msgs/Pose X_world_tool
 ---
 bool evaluate
 string message
